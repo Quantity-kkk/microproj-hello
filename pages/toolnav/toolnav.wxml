@@ -1,0 +1,5 @@
+<!--pages/toolnav/toolnav.wxml-->
+<view class="flex-container" flex-direction="row">
+  <button bindtap="getRandomPhoneNum" style="margin-left:5px; margin-right: 5px">随机手机号码</button>
+  <button bindtap="getRandomIdNum" style="margin-top:5px; margin-left:5px; margin-right: 5px">随机身份证</button>
+</view>

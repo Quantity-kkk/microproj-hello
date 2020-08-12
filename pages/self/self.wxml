@@ -1,0 +1,4 @@
+<!--pages/self/self.wxml-->
+<view class="flex-container" flex-direction="row">
+  <button bindtap="getRandomPhoneNum" style="margin-left:5px; margin-right: 5px">我的</button>
+</view>
