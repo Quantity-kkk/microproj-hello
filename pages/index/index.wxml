@@ -1,16 +1,12 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view>
-    <button wx:if="{{hasUserInfo}}" bindtap="redirectToolPage" class="goodbutton"> 小工具 </button>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">God loves you, {{userInfo.nickName}} !</text>
+  <image class="home-bg" src='../../images/index/home_background.jpg'></image>
+  <text class="home-center-title">我们在一起</text>
+  <view class="home-center-container">
+    <text class="home-center-days">{{days}}</text>
+    <view class="home-center-block">
+      <text class="home-center-block-day">天 之前</text>
+      <text class="home-center-block-date">{{date}}</text>
+    </view>
   </view>
 </view>

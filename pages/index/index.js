@@ -7,6 +7,9 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
+    togetherDate: new Date(2015,9-1,15),
+    date:"2015年9月15日",
+    days:parseInt(Math.abs(new Date()-new Date(2015,9-1,15))/86400000),
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
