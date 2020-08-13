@@ -1,0 +1,47 @@
+<view class="height-half" style="background:#F5DEB3">
+  <image style="width:100%;height:100%;" src="../../images/backup/backup-background-01.jpg"  mode="aspectFill"></image>
+</view>
+
+<view class="height-half" style="background:#B0E0E6">
+
+  <view class="backup-center">
+    <view class="backup-center-container">
+      <view class="backup-center-container-view">
+        <button class="center-button" style="background:#F4B5F4;color:rgba(255,255,255,1);font-size:550;">加班登记</button>
+      </view>
+      <view class="backup-center-container-view">
+        <button class="center-button" style="background:#1AF697;color:rgba(255,255,255,1);font-size:550;">餐补登记</button>
+      </view>
+      <view class="backup-center-container-view">
+        <button class="center-button" style="background:#FEC759;color:rgba(255,255,255,1);font-size:550;">团建登记</button>
+      </view>
+    </view>
+  <!-- button样式不受控制，使用view包一层 -->
+  </view>
+
+  <view class="backup-items">
+    <view class="item-container">
+      <view class="item-container-view">
+        <image class="item-buttion" mode="aspectFit" src="../../images/backup/overtime-search.png"></image>
+        <text class="item-text">加班查询</text>
+      </view>
+      <view class="item-container-view">
+        <image class="item-buttion" mode="aspectFit"  src="../../images/backup/repast-search.png"></image>
+        <text class="item-text">餐补查询</text>
+      </view>
+      <view class="item-container-view">
+        <image class="item-buttion" mode="aspectFit" src="../../images/backup/activity-search.png"></image>
+        <text class="item-text">团建查询</text>
+      </view>
+      <view class="item-container-view">
+        <image class="item-buttion" mode="aspectFit" src="../../images/backup/lanch-vote.png"></image>
+        <text class="item-text">用餐登记</text>
+      </view>
+      <view class="item-container-view">
+        <image class="item-buttion" mode="aspectFit" src="../../images/backup/lanch-search.png"></image>
+        <text class="item-text">用餐查询</text>
+      </view>
+    </view>
+  </view>
+
+</view>

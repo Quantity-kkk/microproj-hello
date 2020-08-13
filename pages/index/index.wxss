@@ -26,10 +26,7 @@
 .usermotto {
   margin-top: 200px;
 }
-.container{
-  display: flex;
-  flex-direction: row;
-}
+
 
 .home-bg{
   width: 100%;
@@ -44,18 +41,17 @@
 
 .home-center-container{
   width: 86%;
-  height: 33%;
+  height: 49%;
   background-color: rgba(255, 255, 255,0.75);
   border-radius: 8%;
-  top: 57%;
-  position: absolute;
-  /* 为里面的text内容布局做铺垫 */
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  margin-top: 70%;
 }
 
 .container{
   display: flex;
+  flex-direction: row;
   justify-content: center;
   position: relative;
 }
@@ -67,21 +63,21 @@ page{
 .home-center-title{
   font-size: 24px;
   color: rgba(255,255,255,0.8);
-  margin-left: -48%;
-  margin-bottom: -9%;
   font-weight: blod;
+  margin-top: -10%;
+  position: absolute;  
 }
 .home-center-days{
-  width: 39%;font-size: 40px;
-  justify-content: center;
-  align-items: center;
+  width: 39%;
+  font-size: 40px;
   display: flex;
-  margin-top:-20%;
+  flex-direction: row-reverse;
+  padding-right: 10px;
+  margin-top: -2%;
 }
 .home-center-block{
   display: flex;
   flex-direction:column;
-  margin-top:9%;
   width: 61%;
 }
 .home-center-block-day{
@@ -89,4 +85,20 @@ page{
 }
 .home-center-block-date{
   color: rgba(102, 100, 100, 0.863);
+}
+
+/* 中间 */
+.home-center-half{
+  width: 100%;
+  height:50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-center-content-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding-top: 4%;  
 }

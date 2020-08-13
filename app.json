@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/self/self",
-    "pages/toolnav/toolnav"
+    "pages/toolnav/toolnav",
+    "pages/backup/backup"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -24,13 +25,13 @@
       {
         "iconPath": "images/footer_home.png",
         "selectedIconPath": "images/footer_home_active.png",
-        "pagePath":"pages/index/index",
-        "text":"首页"
+        "pagePath": "pages/index/index",
+        "text": "首页"
       },
       {
         "iconPath": "images/footer_backup.png",
         "selectedIconPath": "images/footer_backup_active.png",
-        "pagePath": "pages/logs/logs",
+        "pagePath": "pages/backup/backup",
         "text": "备忘"
       },
       {
@@ -46,5 +47,5 @@
         "text": "我的"
       }
     ]
-  } 
+  }
 }
