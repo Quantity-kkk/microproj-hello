@@ -1,0 +1,67 @@
+<!--pages/self/self.wxml-->
+<view class="{{tabsFixed ? 'header-fixed' : ''}}">
+	<!-- 封面 -->
+	<image class="poster" src="{{user.poster ? user.poster : 'https://img.yejiefeng.com/poster/default.jpg'}}" mode="aspectFill" bindtap="changePoster" />
+
+	<!-- 个人信息 -->
+	<view class="header">
+		<view class="user-box">
+			<view wx:if="{{!user.avatar}}" class="avatar-box">
+				<open-data class="avatar" type="userAvatarUrl"></open-data>
+			</view>
+			<image wx:else class="avatar" src="{{user.avatar}}" bindtap="changeAvatar" mode="aspectFill" />
+			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">
+				<image class="gender-icon" src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />
+			</view>
+			<view class="btn-box">
+				<l-button shape="semicircle" size="mini" bg-color="#337559" width="180" height="55" bind:lintap="{{!isAuth ? 'gotoAuth' : 'gotoUserEdit'}}">{{!isAuth ? '用户授权' : '编辑'}}</l-button>
+				<navigator class="setting" url="/pages/setting/index">
+					<l-icon name="setting" color="#fff" size="30" />
+				</navigator>
+			</view>
+		</view>
+		<text wx:if="{{user.nick_name}}" class="nick-name">{{tabsFixed ? '' : user.nick_name}}</text>
+		<open-data wx:else class="nick-name" type="userNickName"></open-data>
+		<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>
+		<view class="follow-box">
+			<view class="follow follower" bindtap="gotoFollower">
+				<text class="num">--所爱隔山海，山海皆可移</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 消息提示 -->
+<view wx:if="{{messageBrief}}" class="message-box" bindtap="gotoMessage">
+	<image class="message-avatar" src="{{messageBrief.avatar}}" />
+	<text class="message-tip">{{messageBrief.count}}条新动态</text>
+</view>
+
+<!-- 设置列表 -->
+<scroll-view>
+		<button hover-class="btn-list" bindtap="authorize">
+			<l-list title="授权信息" icon="help" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="authorize" />
+		</button>
+		<button hover-class="btn-list" bindtap="clearStorage">
+			<l-list title="清除缓存" icon="delete" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="clearStorage" />
+		</button>
+		<button hover-class="btn-list" open-type="contact">
+			<l-list title="联系客服" icon="customer-service" icon-color="#337559" icon-size="38" gap="30" />
+		</button>
+		<button hover-class="btn-list" bindtap="togglePopup">
+			<l-list title="赞赏作者" icon="like" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="togglePopup" />
+		</button>
+		<button hover-class="btn-list" open-type="share">
+			<l-list title="分享" icon="share" icon-color="#337559" icon-size="36" gap="30" />
+		</button>
+
+		<view class="footer">
+			<image class="github-logo" src="/images/logo/logo_github.png" bindtap="copyLink" />
+			<text class="github-uri" bindtap="copyLink">YongQiangKuang/microproj-hello</text>
+		</view>
+</scroll-view>
+<!-- 消息提示 -->
+<l-message />
+
+<!-- 消息对话框 -->
+<l-dialog />

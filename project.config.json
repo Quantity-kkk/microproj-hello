@@ -6,7 +6,7 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
-		"enhance": false,
+		"enhance": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
 		"minified": true,
@@ -31,7 +31,7 @@
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.4",
+	"libVersion": "2.2.4",
 	"appid": "wx0aa9e543b58845e7",
 	"projectname": "microproj-hello",
 	"debugOptions": {

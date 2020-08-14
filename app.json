@@ -2,7 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/self/self",
+    "pages/mine/mine",
     "pages/toolnav/toolnav",
     "pages/backup/backup"
   ],
@@ -11,6 +11,25 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "usingComponents": {
+    "l-tag": "./miniprogram_npm/lin-ui/tag/index",
+    "l-icon": "./miniprogram_npm/lin-ui/icon/index",
+    "l-button": "./miniprogram_npm/lin-ui/button/index",
+    "l-radio": "../miniprogram_npm/lin-ui/radio/index",
+    "l-radio-group": "../miniprogram_npm/lin-ui/radio-group/index",
+    "l-popup": "../miniprogram_npm/lin-ui/popup/index",
+    "l-message": "./miniprogram_npm/lin-ui/message/index",
+    "l-dialog": "../miniprogram_npm/lin-ui/dialog/index",
+    "l-action-sheet": "../miniprogram_npm/lin-ui/action-sheet/index",
+    "l-loadmore": "../miniprogram_npm/lin-ui/loadmore/index",
+    "l-tabs": "../../components/tabs/index",
+    "l-tabpanel": "../../components/tabpanel/index",
+    "l-card": "../../components/card/index",
+    "l-list": "../../components/list/index",
+    "l-input": "../../components/input/index",
+    "l-textarea": "../../components/textarea/index",
+    "nothing": "../../components/nothing/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
@@ -43,7 +62,7 @@
       {
         "iconPath": "images/footer_me.png",
         "selectedIconPath": "images/footer_me_active.png",
-        "pagePath": "pages/self/self",
+        "pagePath": "pages/mine/mine",
         "text": "我的"
       }
     ]

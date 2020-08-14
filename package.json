@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "lin-ui": "^0.7.5",
     "weui": "^2.3.0"
   },
   "devDependencies": {},

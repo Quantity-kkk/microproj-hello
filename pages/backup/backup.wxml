@@ -2,18 +2,18 @@
   <image style="width:100%;height:100%;" src="../../images/backup/backup-background-01.jpg"  mode="aspectFill"></image>
 </view>
 
-<view class="height-half" style="background:#B0E0E6">
+<view class="height-half" style="background:rgba(176,224,230,0.8)">
 
   <view class="backup-center">
     <view class="backup-center-container">
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:#F4B5F4;color:rgba(255,255,255,1);font-size:550;">加班登记</button>
+        <button class="center-button" style="background:rgba(244,181,244,0.8);color:rgba(255,255,255,1);font-size:550;">加班登记</button>
       </view>
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:#1AF697;color:rgba(255,255,255,1);font-size:550;">餐补登记</button>
+        <button class="center-button" style="background:rgba(26,246,151,0.8);color:rgba(255,255,255,1);font-size:550;">餐补登记</button>
       </view>
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:#FEC759;color:rgba(255,255,255,1);font-size:550;">团建登记</button>
+        <button class="center-button" style="background:rgba(254,199,89,0.8);color:rgba(255,255,255,1);font-size:550;">团建登记</button>
       </view>
     </view>
   <!-- button样式不受控制，使用view包一层 -->
