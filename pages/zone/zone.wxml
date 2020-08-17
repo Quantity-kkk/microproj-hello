@@ -1,0 +1,51 @@
+<!--pages/zone/zone.wxml-->
+<!-- 空间页面： 消息、留言板、好友-->
+<l-tabs id="tabs" animated animated-for-line active-key="comment" active-color="#337559" l-header-class="tabs {{tabsFixed ? 'tabs-fixed' : ''}}" l-line-class="tabs-line" bind:linchange="changeTabs">
+	<l-tabpanel tab="消息" key="topic" slot="topic">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<l-card data-id="{{item.id}}" bindtap="gotoTopicDetail" wx:for="{{messages}}" wx:key="item" l-class="card" l-img-class="{{item.images.length > 0 ? 'card-img' : 'card-img-none'}}" l-title-class="topic-title" type="primary" position="left" image="{{item.images.length > 0 ? item.images[0] : ''}}" image-mode="aspectFill" title="{{item.create_time}}">
+				<view class="card-content">
+					{{item.content}}
+				</view>
+				<text class="delete-text" data-id="{{item.id}}" catchtap="deleteTopic">删除</text>
+			</l-card>
+			<l-loadmore wx:if="{{!isEndTopic}}" show="{{loading}}" line />
+			<l-loadmore show="{{isEndTopic && pageTopic != 1}}" line type="end" />
+		</view>
+	</l-tabpanel>
+	<l-tabpanel tab="留言板" key="comment" slot="comment">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+			<nothing wx:if="{{comments.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有收到留言" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<!-- 编辑按钮 -->
+			<view class="btn-edit" bindtap="onEditTap">
+				<l-icon name="edit" color="#fff" size="30" />
+			</view>
+
+			<l-card data-id="{{item.topic_id}}" bindtap="gotoTopicDetail" wx:for="{{comments}}" wx:key="item" l-class="card" l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left" title="{{item.create_time}}">
+				<view class="comment-top">
+					<view class="card-content">{{item.content}}</view>
+					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+				</view>
+				<view class="comment-topic">
+					<image src="{{item.topic.images[0]}}" class="{{item.topic.images.length > 0 ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
+					<view class="comment-right">
+						<text class="{{item.topic.user.id != -1 ? 'tab-nick-name' : 'tab-anon'}}" catchtap="{{item.topic.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.topic.user.id}}">{{item.topic.user.nick_name}}</text>
+						<text class="card-content">{{item.topic.content}}</text>
+					</view>
+				</view>
+			</l-card>
+			<l-loadmore wx:if="{{!isEndComment}}" show="{{loading}}" line />
+			<l-loadmore show="{{isEndComment && pageComment != 1}}" line type="end" />
+		</view>
+	</l-tabpanel>
+	<l-tabpanel tab="好友" key="star" slot="star">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+			<nothing wx:if="{{friends.length == 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有添加好友" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			
+			<l-index-list>
+
+			</l-index-list>
+		</view>
+	</l-tabpanel>
+</l-tabs>

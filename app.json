@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/mine/mine",
     "pages/toolnav/toolnav",
-    "pages/backup/backup"
+    "pages/backup/backup",
+    "pages/zone/zone"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -54,10 +55,10 @@
         "text": "备忘"
       },
       {
-        "iconPath": "images/footer_tool.png",
-        "selectedIconPath": "images/footer_tool_active.png",
-        "pagePath": "pages/toolnav/toolnav",
-        "text": "工具"
+        "iconPath": "images/footer_zone.png",
+        "selectedIconPath": "images/footer_zone_active.png",
+        "pagePath": "pages/zone/zone",
+        "text": "空间"
       },
       {
         "iconPath": "images/footer_me.png",

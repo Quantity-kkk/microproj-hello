@@ -1,4 +1,4 @@
-<view wx:if="{{show}}" class="l-status-container l-class {{fullScreen ? 'content': ''}}" style="{{'background:'+bgColor}}" bind:tap="tapStatusShow">
+<view wx:if="{{show}}" class="l-status-container l-class {{fullScreen ? 'content': ''}}" style="{{'background:'+bgColor}};{{fullScreen ?'align-items:center;':''}}" mut-bind:tap="tapStatusShow">
   <block wx:if="{{custom}}">
     <slot/>
   </block>
@@ -10,10 +10,10 @@
     <l-button l-class="l-button-class button_margin_top" wx:if="{{buttonText}}">
       <view>{{buttonText}}</view>
     </l-button>
-    <l-button l-class="l-button-class button_margin_top" wx:if="{{!buttonText && type =='network'}}">
+    <l-button l-class="l-button-class button_margin_top" wx:if="{{!buttonText && type ==='network'}}">
       <view>重新加载</view>
     </l-button>
-    <l-button l-class="l-button-class button_margin_top" wx:if="{{!buttonText && type =='cart'}}">
+    <l-button l-class="l-button-class button_margin_top" wx:if="{{!buttonText && type ==='cart'}}">
       <view>去逛逛</view>
     </l-button>
   </block>

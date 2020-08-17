@@ -1,5 +1,5 @@
 <!--pages/self/self.wxml-->
-<view class="{{tabsFixed ? 'header-fixed' : ''}}">
+<view style="width: 100%;height: 653rpx;">
 	<!-- 封面 -->
 	<image class="poster" src="{{user.poster ? user.poster : 'https://img.yejiefeng.com/poster/default.jpg'}}" mode="aspectFill" bindtap="changePoster" />
 
@@ -31,14 +31,8 @@
 	</view>
 </view>
 
-<!-- 消息提示 -->
-<view wx:if="{{messageBrief}}" class="message-box" bindtap="gotoMessage">
-	<image class="message-avatar" src="{{messageBrief.avatar}}" />
-	<text class="message-tip">{{messageBrief.count}}条新动态</text>
-</view>
-
 <!-- 设置列表 -->
-<scroll-view>
+<scroll-view style="margin-top: 10rpx;height: {{phoneHeight}}rpx;" scroll-y="true">
 		<button hover-class="btn-list" bindtap="authorize">
 			<l-list title="授权信息" icon="help" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="authorize" />
 		</button>

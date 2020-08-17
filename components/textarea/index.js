@@ -1,5 +1,5 @@
 import rules from "../../miniprogram_npm/lin-ui/behaviors/rules";
-import eventBus from "../../miniprogram_npm/lin-ui/utils/eventBus";
+import eventBus from "../../miniprogram_npm/lin-ui/core/utils/event-bus";
 Component({
   behaviors: ["wx://form-field", rules],
   externalClasses: ["l-class", "l-error-text", "l-error-text-class", "l-inner-class"],

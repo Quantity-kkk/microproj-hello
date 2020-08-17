@@ -1,4 +1,4 @@
-import eventBus from "../../miniprogram_npm/lin-ui/utils/eventBus.js";
+import eventBus from "../../miniprogram_npm/lin-ui/core/utils/event-bus";
 import validator from "../../miniprogram_npm/lin-ui/behaviors/validator";
 import rules from "../../miniprogram_npm/lin-ui/behaviors/rules";
 Component({

@@ -60,9 +60,7 @@ Page({
     })
   },
   onReady : function(){
-    wx.setNavigationBarTitle({
-      title: 'KBB-首页'
-    })
+
   },
   redirectToolPage : function(params){
         //如果带有参数，则进行祝福判断，如果不带参数，则直接跳转到小工具页面

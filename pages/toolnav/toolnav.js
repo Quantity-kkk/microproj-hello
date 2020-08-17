@@ -19,10 +19,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-      //绑定按钮
-      wx.setNavigationBarTitle({
-        title: 'ZBB-小工具'
-      })
+
   },
 
   /**

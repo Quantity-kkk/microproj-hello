@@ -13,8 +13,6 @@ Page({
     })
   },
   onReady:function name() {
-    wx.setNavigationBarTitle({
-      title: 'KBBZBB-日志'
-    })
+
   }
 })

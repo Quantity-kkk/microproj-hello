@@ -1,0 +1,22 @@
+/* pages/zone/zone.wxss */
+.btn-edit {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #9FC6FF;
+  opacity: 0.9;
+}
+
+.nothing {
+  margin-top: 335rpx;
+}
+
+.nothing-message {
+  margin-top: 400rpx;
+}

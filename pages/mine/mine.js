@@ -26,14 +26,18 @@ Page({
   },
 
   onLoad() {
-    // 轮询获取消息概要
-    
+    var that = this;
+    wx.getSystemInfo({
+      success (res) {
+        that.setData({
+          phoneHeight: res.windowHeight/res.screenWidth*750-660,
+        })
+      }
+    })
   },
 
   onReady : function(){
-    wx.setNavigationBarTitle({
-      title: '我的'
-    })
+
   },
   onShow() {
     this.getUser()
