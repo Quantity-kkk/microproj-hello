@@ -1,51 +1,109 @@
-<!--pages/zone/zone.wxml-->
+<!-- pages/zone/zone.wxml -->
 <!-- 空间页面： 消息、留言板、好友-->
 <l-tabs id="tabs" animated animated-for-line active-key="comment" active-color="#337559" l-header-class="tabs {{tabsFixed ? 'tabs-fixed' : ''}}" l-line-class="tabs-line" bind:linchange="changeTabs">
 	<l-tabpanel tab="消息" key="topic" slot="topic">
+
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			<l-card data-id="{{item.id}}" bindtap="gotoTopicDetail" wx:for="{{messages}}" wx:key="item" l-class="card" l-img-class="{{item.images.length > 0 ? 'card-img' : 'card-img-none'}}" l-title-class="topic-title" type="primary" position="left" image="{{item.images.length > 0 ? item.images[0] : ''}}" image-mode="aspectFill" title="{{item.create_time}}">
-				<view class="card-content">
-					{{item.content}}
-				</view>
-				<text class="delete-text" data-id="{{item.id}}" catchtap="deleteTopic">删除</text>
-			</l-card>
-			<l-loadmore wx:if="{{!isEndTopic}}" show="{{loading}}" line />
-			<l-loadmore show="{{isEndTopic && pageTopic != 1}}" line type="end" />
-		</view>
-	</l-tabpanel>
-	<l-tabpanel tab="留言板" key="comment" slot="comment">
-		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-			<nothing wx:if="{{comments.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有收到留言" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			<!-- 编辑按钮 -->
-			<view class="btn-edit" bindtap="onEditTap">
-				<l-icon name="edit" color="#fff" size="30" />
-			</view>
-
-			<l-card data-id="{{item.topic_id}}" bindtap="gotoTopicDetail" wx:for="{{comments}}" wx:key="item" l-class="card" l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left" title="{{item.create_time}}">
-				<view class="comment-top">
-					<view class="card-content">{{item.content}}</view>
-					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
-				</view>
-				<view class="comment-topic">
-					<image src="{{item.topic.images[0]}}" class="{{item.topic.images.length > 0 ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
-					<view class="comment-right">
-						<text class="{{item.topic.user.id != -1 ? 'tab-nick-name' : 'tab-anon'}}" catchtap="{{item.topic.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.topic.user.id}}">{{item.topic.user.nick_name}}</text>
-						<text class="card-content">{{item.topic.content}}</text>
+			
+			<!-- 评论 -->
+			<view class="comment-box" wx:if="{{messages.length > 0}}">
+				<view class="comment" wx:for="{{messages}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
+					<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
+					<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+						<view class="comment-top">
+							<view class="nick-name" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard">{{item.user.nick_name}}</view>
+							<view class="time">{{item.create_time}}</view>
+						</view>
+						<view class="comment-bottom">
+							<view class="content">
+								<text wx:if="{{item.reply_user.id}}">回复</text>
+								<text wx:if="{{item.reply_user.id}}" class="nick-name">{{item.reply_user.nick_name}}: </text>{{item.content}}
+							</view>
+						</view>
 					</view>
 				</view>
-			</l-card>
-			<l-loadmore wx:if="{{!isEndComment}}" show="{{loading}}" line />
-			<l-loadmore show="{{isEndComment && pageComment != 1}}" line type="end" />
+
+				<l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading"/>
+				<l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end"/>
+			</view>
+			<!-- !评论 -->
 		</view>
+		<!-- tab content -->
 	</l-tabpanel>
+
+
+	<l-tabpanel tab="留言板" key="comment" slot="comment">
+
+			<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+				<nothing wx:if="{{comments.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有收到留言" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+				
+				<scroll-view scroll-y enable-back-to-top lower-threshold="-35" class="topic-scroll" bindscrolltoupper="scrollToUpper" bindscrolltolower="scrollToLower" style="height:{{height}}rpx">
+					<view class="btn-edit" bindtap="onEditTap">
+						<l-icon name="edit" color="#fff" size="30" />
+					</view>
+					<l-card type="avatar" l-class="card" l-title-class="{{item.user.id != -1 ? 'card-title' : 'card-title-anon'}}" 
+						wx:for="{{comments}}" wx:key="item" wx:for-index="cardIndex" 
+						image="{{item.user.avatar}}" title="{{item.user.nick_name}}" 
+						describe="{{item.create_time}}" bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
+						bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
+						data-user-id="{{item.user.id}}">
+						<view class="{{item.content.length >= 200 && !item.flod ? 'content-close' : 'avater-content'}}" data-id="{{item.id}}" bindtap="gotoDetail">{{item.content}}</view>
+						<view wx:if="{{item.content.length >= 200}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">{{item.flod ? '收起' : '全文'}}</view>
+
+						<view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+							<block wx:if="{{item.images.length == 1}}">
+								<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="widthFix" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+							<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">
+								<image class="column-two" wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="aspectFill" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+							<block wx:else>
+								<image wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="aspectFill" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+						</view>
+
+						<view class="avater-share-container">
+							<view class="like-container" data-id="{{item.id}}" bindtap="onCommentTap">
+								<l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
+								<view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
+							</view>
+						</view>
+						<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}" bindtap="onMoreTap" />
+					</l-card>
+
+					<l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
+					<l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
+				</scroll-view>
+			</view>
+
+
+	</l-tabpanel>
+
 	<l-tabpanel tab="好友" key="star" slot="star">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{friends.length == 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有添加好友" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			
-			<l-index-list>
 
+			<l-index-list
+				scroll-top="{{scrollTop}}"
+				l-selected-class="l-selected-class"
+				l-tip-class="l-tip-class"
+				style="width:100%"
+				sidebar-data="{{sideBarData}}"
+				l-sidebar-class="sidebar-class"
+				l-tip-text-class="l-tip-text-class">
+				<block wx:for="{{sideBarData.length}}" wx:key="index" wx:for-index="anchorIndex">
+					<l-index-anchor/>
+					<block wx:for="{{2}}" wx:key="index" wx:for-index="itemIndex">
+						<view class="person-item">
+							<image lazy-load="{{true}}" data-avatar-id="{{anchorIndex*2+itemIndex+1}}" catch:tap="onTapAvatar" class="person-avatar"
+										src="../../images/index-list/avatar/{{anchorIndex*2+itemIndex+1}}.jpg"></image>
+							<view class="person-name">{{nameData[anchorIndex][itemIndex]}}</view>
+						</view>
+					</block>
+				</block>
 			</l-index-list>
+			
 		</view>
 	</l-tabpanel>
-</l-tabs>
+</l-tabs> 
