@@ -47,7 +47,7 @@ Page({
     messages:[
       {
         user:{
-          avatar:'../../images/index-list/avatar/8.jpg',
+          avatar:'../../images/index-list/avatar/7.jpg',
           id:'ZXJDKXS',
           nick_name:'ZXJDKXS'
         },
@@ -62,7 +62,7 @@ Page({
       },
       {
         user:{
-          avatar:'../../images/index-list/avatar/8.jpg',
+          avatar:'../../images/index-list/avatar/7.jpg',
           id:'ZXJDKXS',
           nick_name:'ZXJDKXS'
         },
@@ -113,7 +113,7 @@ Page({
     height: 1206, // 话题区高度
     tabIndex: 1,
     tabsTop: 255,
-    tabsFixed: false, // Tabs是否吸顶
+    tabsFixed: true, // Tabs是否吸顶
     messageBrief: null,
     scrollTop:undefined,
     isEnd: true, // 是否到底

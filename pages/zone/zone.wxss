@@ -17,6 +17,17 @@ l-index-list{
   transition: 0.3s;
 }
 
+/* tab吸顶 */
+.tabs-fixed {
+  position: fixed;
+  margin-top: 0;
+  z-index: 999;
+}
+
+.tab-content-top {
+  margin-top: 81rpx;
+}
+
 /*联系人*/
 
 .l-selected-class{
@@ -56,6 +67,18 @@ l-index-list{
   right: 0 !important;
   padding-left: 10rpx !important;
   padding-right: 20rpx !important;
+  transform:translateY(-45%) !important;
+}
+
+.l-sidebar-item-class{
+  margin-top: 7rpx !important;
+  width: 38rpx !important;
+  height: 38rpx !important;
+}
+
+.l-tip-text-class{
+  color: #fff !important;
+  font-size: 48rpx !important;
 }
 
 .card {

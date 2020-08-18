@@ -6,7 +6,7 @@
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			
-			<!-- 评论 -->
+			<!-- 评论： message 留言：xxxx、comment 评论:、reply 回复xxx: -->
 			<view class="comment-box" wx:if="{{messages.length > 0}}">
 				<view class="comment" wx:for="{{messages}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
 					<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
@@ -91,13 +91,14 @@
 				style="width:100%"
 				sidebar-data="{{sideBarData}}"
 				l-sidebar-class="sidebar-class"
+				l-sidebar-item-class="l-sidebar-item-class"
 				l-tip-text-class="l-tip-text-class">
 				<block wx:for="{{sideBarData.length}}" wx:key="index" wx:for-index="anchorIndex">
 					<l-index-anchor/>
 					<block wx:for="{{2}}" wx:key="index" wx:for-index="itemIndex">
 						<view class="person-item">
 							<image lazy-load="{{true}}" data-avatar-id="{{anchorIndex*2+itemIndex+1}}" catch:tap="onTapAvatar" class="person-avatar"
-										src="../../images/index-list/avatar/{{anchorIndex*2+itemIndex+1}}.jpg"></image>
+										src="../../images/index-list/avatar/7.jpg"></image>
 							<view class="person-name">{{nameData[anchorIndex][itemIndex]}}</view>
 						</view>
 					</block>

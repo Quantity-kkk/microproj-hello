@@ -5,7 +5,8 @@
     "pages/mine/mine",
     "pages/toolnav/toolnav",
     "pages/backup/backup",
-    "pages/zone/zone"
+    "pages/zone/zone",
+    "pages/auth/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

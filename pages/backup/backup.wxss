@@ -42,7 +42,7 @@ page{
 .center-button{
   width: 90%;
   height: 90%;
-  font-size: 30rpx;
+  font-size: 24rpx;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -103,5 +103,4 @@ page{
 }
 .item-text{
   font-size: 24rpx;
-  font-weight: 550;
 }
