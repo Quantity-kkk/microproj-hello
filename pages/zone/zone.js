@@ -44,7 +44,7 @@ Page({
     nameData,
     sideBarData,
     user: {},
-    messages:[
+    informations:[
       {
         user:{
           avatar:'../../images/index-list/avatar/7.jpg',
@@ -76,7 +76,7 @@ Page({
         create_time:'20小时前'
       }
     ],
-    comments: [
+    messages: [
       {
         user:{
           id:'ZXJDKXS',
@@ -110,6 +110,7 @@ Page({
         "list":[{"name":"Balan"},{"name":"Ben"}]
       },
     ],
+    actionList: [],
     height: 1206, // 话题区高度
     tabIndex: 1,
     tabsTop: 255,
@@ -326,5 +327,81 @@ Page({
       this.getTopics(page + 1, labelId)
     }
   },
+  /**
+   * 跳转话题详情页
+   */
+  gotoDetail(event) {
+    const messageId = event.currentTarget.dataset.id
+    wx.navigateTo({
+      url: "/pages/message-detail/index?messageId=" + messageId
+    })
+  },
 
+  /**
+   * 点击编辑
+   */
+  onEditTap() {
+    wx.navigateTo({
+      url: "/pages/message-edit/index"
+    })
+    /*
+    if (app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/message-edit/index"
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }*/
+
+  },
+
+  /**
+   * 跳转到用户名片页
+   */
+  gotoVisitingCard(event) {
+    const userId = event.target.dataset.userId
+    wx.navigateTo({
+      url: "/pages/visiting-card/index?userId=" + userId
+    })
+    /*
+    if (app.globalData.userDetail) {
+      const userId = event.target.dataset.userId
+      wx.navigateTo({
+        url: "/pages/visiting-card/index?userId=" + userId
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }*/
+  },
+    /**
+   * 展开操作菜单
+   */
+  onMoreTap(event) {
+    const topicIndex = event.currentTarget.dataset.index
+    let actionList = [{
+      name: "分享",
+      color: "#666",
+      openType: "share"
+    }, {
+      name: "举报",
+      color: "#666"
+    }]
+
+    if (this.data.userId == this.data.messages[topicIndex].user.id) {
+      actionList.push({
+        name: "删除",
+        color: "#d81e05"
+      })
+    }
+
+    this.setData({
+      actionList: actionList,
+      showAction: true,
+      topicIndex: topicIndex
+    })
+  },
 })

@@ -4,11 +4,11 @@
 	<l-tabpanel tab="消息" key="topic" slot="topic">
 
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<nothing wx:if="{{informations.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			
 			<!-- 评论： message 留言：xxxx、comment 评论:、reply 回复xxx: -->
-			<view class="comment-box" wx:if="{{messages.length > 0}}">
-				<view class="comment" wx:for="{{messages}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
+			<view class="comment-box" wx:if="{{informations.length > 0}}">
+				<view class="comment" wx:for="{{informations}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
 					<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
 					<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
 						<view class="comment-top">
@@ -36,14 +36,14 @@
 	<l-tabpanel tab="留言板" key="comment" slot="comment">
 
 			<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-				<nothing wx:if="{{comments.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有收到留言" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+				<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有收到留言" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 				
 				<scroll-view scroll-y enable-back-to-top lower-threshold="-35" class="topic-scroll" bindscrolltoupper="scrollToUpper" bindscrolltolower="scrollToLower" style="height:{{height}}rpx">
 					<view class="btn-edit" bindtap="onEditTap">
 						<l-icon name="edit" color="#fff" size="30" />
 					</view>
 					<l-card type="avatar" l-class="card" l-title-class="{{item.user.id != -1 ? 'card-title' : 'card-title-anon'}}" 
-						wx:for="{{comments}}" wx:key="item" wx:for-index="cardIndex" 
+						wx:for="{{messages}}" wx:key="item" wx:for-index="cardIndex" 
 						image="{{item.user.avatar}}" title="{{item.user.nick_name}}" 
 						describe="{{item.create_time}}" bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
 						bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
@@ -74,6 +74,15 @@
 
 					<l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
 					<l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
+
+					<!-- 操作菜单 -->
+					<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}" bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+
+					<!-- 消息对话框 -->
+					<l-dialog />
+
+					<!-- 消息提示 -->
+					<l-message />
 				</scroll-view>
 			</view>
 

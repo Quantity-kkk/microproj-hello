@@ -6,12 +6,14 @@
     "pages/toolnav/toolnav",
     "pages/backup/backup",
     "pages/zone/zone",
-    "pages/auth/index"
+    "pages/auth/index",
+    "pages/message-detail/index",
+    "pages/message-edit/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "静鑫",
     "navigationBarTextStyle": "black"
   },
   "usingComponents": {

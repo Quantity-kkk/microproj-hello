@@ -1,0 +1,63 @@
+<!--pages/visiting-card/index.wxml-->
+
+<!-- 封面 -->
+<image wx:if="{{user.id}}" class="poster" src="{{user.poster ? user.poster : 'https://img.yejiefeng.com/poster/default.jpg'}}" mode="aspectFill" />
+
+<!-- 个人信息 -->
+<view wx:if="{{user.id}}" class="header">
+	<view class="user-box">
+		<image class="avatar" src="{{user.avatar}}" />
+		<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">
+			<image class="gender-icon" src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />
+		</view>
+		<view class="btn-box">
+			<l-button plain="{{user.has_follow}}" l-class="{{user.has_follow ? 'btn-unfollow' : ''}}" shape="semicircle" size="mini" bg-color="{{user.has_follow ? '#fff' : '#337559'}}" width="180" height="55" bind:lintap="onFollowTap">{{user.has_follow ? '取消关注' : '+ 关注'}}</l-button>
+		</view>
+	</view>
+	<text wx:if="{{user.nick_name}}" class="nick-name">{{user.nick_name}}</text>
+	<open-data wx:else class="nick-name" type="userNickName"></open-data>
+	<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>
+	<view class="follow-box">
+		<view class="follow follower" bindtap="gotoFollower">
+			<text class="num">{{user.follower ? user.follower : '0'}}</text>
+			<text class="text">关注{{genderText}}的</text>
+		</view>
+		<view class="follow following" bindtap="gotoFollowing">
+			<text class="num">{{user.following ? user.following : '0'}}</text>
+			<text class="text">{{genderText}}关注的</text>
+		</view>
+	</view>
+</view>
+
+<!-- Ta的动态 -->
+<l-tabs wx:if="{{user.id}}" id="tabs" animated animated-for-line active-color="#337559" l-header-class="tabs {{tabsFixed ? 'tabs-fixed' : ''}}" l-line-class="tabs-line" bind:linchange="changeTabs">
+	<l-tabpanel tab="留言板" key="comment" slot="comment">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="{{genderText}}还没有发表评论" nothing-class="nothing" />
+			<l-card data-id="{{item.message_id}}" bindtap="gotoTopicDetail" wx:for="{{messages}}" wx:key="item" l-class="card" l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left" title="{{item.create_time}}">
+				<view class="comment-top">
+					<view class="card-content">{{item.content}}</view>
+				</view>
+				<view class="comment-topic">
+					<image src="{{item.message.images[0]}}" class="{{item.message.images.length > 0 ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
+					<view class="comment-right">
+						<text class="{{item.message.user.id != -1 ? 'tab-nick-name' : 'tab-anon'}}" catchtap="{{item.message.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.message.user.id}}">{{item.message.user.nick_name}}</text>
+						<text class="card-content">{{item.message.content}}</text>
+					</view>
+				</view>
+			</l-card>
+			<l-loadmore wx:if="{{!isEndComment}}" show="{{loading}}" line />
+			<l-loadmore show="{{isEndComment && pageComment != 1}}" line type="end" />
+		</view>
+	</l-tabpanel>
+	
+</l-tabs>
+
+<!-- 操作菜单 -->
+<l-action-sheet l-title-class="action-title" />
+
+<!-- 消息提示 -->
+<l-message />
+
+<!-- nothing -->
+<nothing wx:if="{{!user.id}}" pic="../../images/icon_nothing/pic_profile.png" tip="该用户消失了" />

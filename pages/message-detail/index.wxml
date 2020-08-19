@@ -1,0 +1,74 @@
+<!--pages/message-detail/index.wxml-->
+
+<!-- 动态详情 -->
+<l-card wx:if="{{message.id}}" type="avatar" l-class="card" l-title-class="{{message.user.id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{message.user.avatar}}" title="{{message.user.nick_name}}" describe="{{message.create_time}}" bind:linavatar="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" bind:lintitle="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{message.user.id}}">
+	<view class="avater-content">{{message.content}}</view>
+	<view class="posters">
+		<block wx:if="{{message.images.length == 1}}">
+			<image class="column-one" src="{{message.images[0]}}" mode="widthFix" bindtap="previewImage" data-src="{{message.images[0]}}" lazy-load />
+		</block>
+		<block wx:elif="{{message.images.length == 2 || message.images.length == 4}}">
+			<image class="column-two" wx:for="{{message.images}}" wx:key="item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}" lazy-load />
+		</block>
+		<block wx:else>
+			<image wx:for="{{message.images}}" wx:key="item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}" lazy-load />
+		</block>
+	</view>
+
+	<view class="label-box" wx:if="{{message.label}}">
+		<l-tag wx:for="{{message.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559" plain bind:lintap="gotoMessage" data-label="{{item.id}}">#{{item.name}}</l-tag>
+	</view>
+
+	<view class="avater-share-container">
+		<view class="like-container" bindtap="onCommentTap">
+			<l-icon name="comment" color="{{message.has_comment ? '#d81e05' : '#666'}}" size="28" />
+			<view class="{{message.has_comment ? 'has-text' : ''}} number">{{message.comment_count}}</view>
+		</view>
+	</view>
+	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />
+</l-card>
+
+<!-- 评论 -->
+<view wx:if="{{message.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
+	<view class="comment" wx:for="{{comments}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
+		<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
+		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+			<view class="comment-top">
+				<view class="nick-name" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard">{{item.user.nick_name}}</view>
+				<view class="time">{{item.create_time}}</view>
+			</view>
+			<view class="comment-bottom">
+				<view class="content">
+					<text wx:if="{{item.reply.id}}">回复</text>
+					<text wx:if="{{item.reply.id}}" class="nick-name">{{item.reply.nick_name}}: </text>{{item.content}}</view>
+				<view class="delete-box" wx:if="{{userId == item.user.id}}">
+					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
+		<text>展开更多评论</text>
+		<view class="more-icon">
+			<l-icon name="down" color="#337559" size="22" />
+		</view>
+	</view>
+</view>
+
+<!-- 评论编辑区 -->
+<view wx:if="{{message.id}}" class="comment-edit">
+	<l-input hide-label maxlength="150" width="600" focus="{{focus}}" placeholder="{{placeholder}}" value="{{comment}}" bind:lininput="inputComment" />
+	<l-button shape="circle" size="mini" bg-color="#337559" width="125" height="60" bind:lintap="onCommntBtnTap">评论</l-button>
+</view>
+
+<!-- nothing -->
+<nothing wx:if="{{!message.id}}" pic="../../images/icon_nothing/pic_topic.png" tip="该话题消失了" />
+
+<!-- 操作菜单 -->
+<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}" bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+
+<!-- 消息提示 -->
+<l-message />
+
+<!-- 消息对话框 -->
+<l-dialog />
