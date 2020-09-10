@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "js-base64": "^3.4.5",
     "lin-ui": "^0.8.7",
     "weui": "^2.3.0"
   },

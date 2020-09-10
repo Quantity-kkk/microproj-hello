@@ -41,8 +41,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nameData,
-    sideBarData,
+    nameData: nameData,
+    sideBarData: sideBarData,
     user: {},
     informations:[
       {
@@ -111,6 +111,11 @@ Page({
       },
     ],
     actionList: [],
+    messageIndex: -1,
+    pageMessage: 1,
+    pageInformation: 1,
+    isEndInformation: false,
+    isEndMessage: false,
     height: 1206, // 话题区高度
     tabIndex: 1,
     tabsTop: 255,
@@ -157,7 +162,19 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.getUser()
 
+    const userId = this.data.user.id
+    if(!userId){
+      // 数据初始化
+      this.setData({
+        messages: [],
+        pageInformation: 1,
+        pageMessage: 1,
+        isEndInformation: false,
+        isEndMessage: false
+      })
+    }
   },
 
   /**
@@ -206,10 +223,10 @@ Page({
 
     if (userId) {
       if (tabIndex == 0) {
-        this.getTopics(userId)
+        this.getMessages(userId)
       }
       if (tabIndex == 1) {
-        this.getComments(userId)
+        this.getMessages(userId)
       }
       if (tabIndex == 2) {
         this.getStars(userId)
@@ -265,10 +282,10 @@ Page({
 
           const tabIndex = this.data.tabIndex
           if (tabIndex == 0) {
-            this.getTopics(userId)
+            this.getMessages(userId)
           }
           if (tabIndex == 1) {
-            this.getComments(userId)
+            this.getMessages(userId)
           }
           if (tabIndex == 2) {
             this.getStars(userId)
@@ -301,31 +318,29 @@ Page({
    * 下拉刷新
    */
   scrollToUpper() {
-    const labelId = this.data.labelId
-
-    if (labelId == -1) {
-      this.getTopics()
-    } else {
-      this.getTopics(1, labelId)
+    const userId = this.data.user.id
+  
+    //刷新留言板数据
+    if(userId){
+      const page = this.data.pageComment
+      this.getMessages(userId, page+1)
+  
+      // 振动交互
+      // wx.vibrateShort()
     }
-    // 振动交互
-    wx.vibrateShort()
+    
   },
     /**
    * 触底加载
    */
   scrollToLower() {
-    const labelId = this.data.labelId
     const page = this.data.page
 
     this.setData({
       loading: true
     })
-    if (labelId == -1) {
-      this.getTopics(page + 1)
-    } else {
-      this.getTopics(page + 1, labelId)
-    }
+
+    this.getMessages(page + 1, labelId)
   },
   /**
    * 跳转话题详情页
@@ -341,20 +356,16 @@ Page({
    * 点击编辑
    */
   onEditTap() {
-    wx.navigateTo({
-      url: "/pages/message-edit/index"
-    })
-    /*
     if (app.globalData.userDetail) {
+      const userInfo = app.globalData.userDetail
       wx.navigateTo({
-        url: "/pages/message-edit/index"
+        url: "/pages/message-edit/index?userId="+userInfo.id
       })
     } else {
       wx.navigateTo({
         url: "/pages/auth/index"
       })
-    }*/
-
+    }
   },
 
   /**
@@ -377,21 +388,18 @@ Page({
       })
     }*/
   },
-    /**
+  /**
    * 展开操作菜单
    */
   onMoreTap(event) {
-    const topicIndex = event.currentTarget.dataset.index
+    const messageIndex = event.currentTarget.dataset.index
     let actionList = [{
       name: "分享",
       color: "#666",
       openType: "share"
-    }, {
-      name: "举报",
-      color: "#666"
     }]
 
-    if (this.data.userId == this.data.messages[topicIndex].user.id) {
+    if (this.data.user.id == this.data.messages[messageIndex].user.id) {
       actionList.push({
         name: "删除",
         color: "#d81e05"
@@ -401,7 +409,93 @@ Page({
     this.setData({
       actionList: actionList,
       showAction: true,
-      topicIndex: topicIndex
+      messageIndex: messageIndex
+    })
+  },
+
+  /**
+   * 获取用户留言信息
+   */
+  getMessages(userId, page = 1, size = pageSize) {
+    const url = api.messageAPI + "user/" + userId + "/"
+    let data = {
+      size: size,
+      page: page
+    }
+
+    if (this.data.isEndMessage && page != 1) {
+      return
+    }
+
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code == 200) {
+        const messages = res.data.data
+        this.setData({
+          pageMessage: (messages.length == 0 && page != 1) ? page - 1 : page,
+          loading: false,
+          isEndMessage: ((messages.length < pageSize) || (messages.length == 0 && page != 1)) ? true : false,
+          messages: page == 1 ? messages : this.data.messages.concat(messages)
+        })
+      }
+    })
+  },
+
+  /**
+   * 图片预览
+   */
+  previewImage(event) {
+    const index = event.currentTarget.dataset.index
+    const current = event.currentTarget.dataset.src
+    const urls = this.data.messages[index].images
+
+    wx.previewImage({
+      current: current,
+      urls: urls
+    })
+  },
+
+  /**
+   * 点击操作菜单按钮
+   */
+  onActionItemtap(event) {
+    const index = event.detail.index
+    if (index == 1) {
+      // 删除话题
+      this.deleteMessage()
+    }
+  },
+
+  /**
+   * 删除话题
+   */
+  deleteMessage() {
+    wx.lin.showDialog({
+      type: "confirm",
+      title: "提示",
+      content: "确定要删除该留言？",
+      success: (res) => {
+        if (res.confirm) {
+          const messageId = this.data.messages[this.data.messageIndex].id
+          const url = api.messageAPI + messageId + "/"
+
+          wxutil.request.delete(url).then((res) => {
+            if (res.data.code == 200) {
+              const userId = this.data.user.id
+              this.getMessages(userId,this.data.pageMessage)
+
+              wx.lin.showMessage({
+                type: "success",
+                content: "删除成功！"
+              })
+            } else {
+              wx.lin.showMessage({
+                type: "error",
+                content: "删除失败！"
+              })
+            }
+          })
+        }
+      }
     })
   },
 })

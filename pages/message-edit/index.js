@@ -12,48 +12,17 @@ Page({
     canAnon: false,
     isAnon: false,
     content: null,
-    commentTemplateId: null
+    commentTemplateId: 'fFUWiiLXOov-mPo9xstNJVkXXXjNw7Qs_n_XjEeP-e0',
+    targetUser: null,
+    writer:null
   },
 
-  onLoad() {
-    this.getLabels()
-    this.getTemplateId()
-  },
-
-  /**
-   * 获取标签
-   */
-  getLabels() {
-    const that = this
-    const url = api.labelAPI
-    const data = {
-      app_id: app.globalData.appId
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        this.setData({
-          labels: res.data.data
-        })
-      }
-    })
-  },
-
-  /**
-   * 获取评论模板ID
-   */
-  getTemplateId(title = "评论模板") {
-    const url = api.templateAPI
-    const data = {
-      title: title
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        this.setData({
-          commentTemplateId: res.data.data.template_id
-        })
-      }
+  onLoad(option) {
+    //设置留言是留给谁的
+    const userInfo = app.globalData.userDetail
+    this.setData({
+      targetUser: option.userId,
+      writer: userInfo.id
     })
   },
 
@@ -66,14 +35,6 @@ Page({
     })
   },
 
-  /**
-   * 设置匿名
-   */
-  onAnonTap(event) {
-    this.setData({
-      isAnon: event.detail.checked
-    })
-  },
 
   /**
    * 选择图片
@@ -90,62 +51,10 @@ Page({
   },
 
   /**
-   * 选择标签
-   */
-  onTagTap(event) {
-    const labelId = event.currentTarget.dataset.label
-    let chooseCount = this.data.chooseCount
-    let labels = this.data.labels
-    let canAnon = true
-    let labelsActive = []
-
-    // 标签状态设置
-    for (let i = 0; i < labels.length; i++) {
-      if (labelId == labels[i].id) {
-        const active = labels[i].active
-        if (active) {
-          chooseCount--
-          labels[i].active = !active
-        } else {
-          if (chooseCount == 3) {
-            wx.lin.showMessage({
-              type: "error",
-              content: "最多选择3个标签！"
-            })
-          } else {
-            chooseCount++
-            labels[i].active = !active
-          }
-        }
-      }
-    }
-
-    // 是否显示匿名开关
-    for (let i = 0; i < labels.length; i++) {
-      if (labels[i].active) {
-        labelsActive.push(labels[i].id)
-      }
-      if (labels[i].active && !labels[i].allowed_anon) {
-        canAnon = false
-      }
-    }
-    if (chooseCount == 0) {
-      canAnon = false
-    }
-
-    this.setData({
-      labels: labels,
-      canAnon: canAnon,
-      labelsActive: labelsActive,
-      chooseCount: chooseCount
-    })
-  },
-
-  /**
    * 多图上传
    */
   sendImages(imageFiles) {
-    const url = api.topicAPI + "images/"
+    const url = api.messageAPI + "images"
     return Promise.all(imageFiles.map((imageFile) => {
       return new Promise(function (resolve, reject) {
         wxutil.file.upload({
@@ -155,7 +64,7 @@ Page({
         }).then((res) => {
           const data = JSON.parse(res.data);
           if (data.code == 200) {
-            resolve(data.data.url)
+            resolve(data.data.id)
           }
         }).catch((error) => {
           reject(error)
@@ -165,13 +74,13 @@ Page({
   },
 
   /**
-   * 点击发布
+   * 点击留言
    */
   onSubmitTap() {
     const content = this.data.content
-    const isAnon = this.data.isAnon
-    const labels = this.data.labelsActive
     const imageFiles = this.data.imageFiles
+    const targetUser = this.data.targetUser
+    const writer = this.data.writer
     let images = []
 
     if (!wxutil.isNotNull(content)) {
@@ -189,14 +98,15 @@ Page({
     wx.requestSubscribeMessage({
       tmplIds: [templateId],
       complete() {
-        // 发布话题
-        wxutil.showLoading("发布中...")
+        // 留言
+        wxutil.showLoading("留言中...")
         let data = {
           content: content,
-          is_anon: isAnon,
           images: [],
-          labels: labels
+          targetUser: targetUser,
+          writer: writer
         }
+
         if (imageFiles.length > 0) {
           that.sendImages(imageFiles).then((res) => {
             data.images = res
@@ -210,17 +120,17 @@ Page({
   },
 
   /**
-   * 上传话题
+   * 发布留言
    */
   uploadTopic(data) {
-    const url = api.topicAPI
+    const url = api.messageAPI+"leaveMessage"
 
     wxutil.request.post(url, data).then((res) => {
       wx.hideLoading()
       if (res.data.code == 200) {
         wx.lin.showMessage({
           type: "success",
-          content: "发布成功！",
+          content: "留言成功！",
           success() {
             wxutil.setStorage("refreshTopics", true)
             wx.navigateBack()
@@ -229,7 +139,7 @@ Page({
       } else {
         wx.lin.showMessage({
           type: "error",
-          content: "发布失败！"
+          content: "留言失败！"
         })
       }
     })

@@ -1,7 +1,7 @@
 <!--pages/message-detail/index.wxml-->
 
 <!-- 动态详情 -->
-<l-card wx:if="{{message.id}}" type="avatar" l-class="card" l-title-class="{{message.user.id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{message.user.avatar}}" title="{{message.user.nick_name}}" describe="{{message.create_time}}" bind:linavatar="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" bind:lintitle="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{message.user.id}}">
+<l-card wx:if="{{message.id}}" type="avatar" l-class="card" l-title-class="{{message.user.id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{message.user.avatar}}" title="{{message.user.nickName}}" describe="{{message.createTime}}" bind:linavatar="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" bind:lintitle="{{message.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{message.user.id}}">
 	<view class="avater-content">{{message.content}}</view>
 	<view class="posters">
 		<block wx:if="{{message.images.length == 1}}">
@@ -34,13 +34,13 @@
 		<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
 		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
 			<view class="comment-top">
-				<view class="nick-name" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard">{{item.user.nick_name}}</view>
-				<view class="time">{{item.create_time}}</view>
+				<view class="nick-name" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard">{{item.user.nickName}}</view>
+				<view class="time">{{item.createTime}}</view>
 			</view>
 			<view class="comment-bottom">
 				<view class="content">
 					<text wx:if="{{item.reply.id}}">回复</text>
-					<text wx:if="{{item.reply.id}}" class="nick-name">{{item.reply.nick_name}}: </text>{{item.content}}</view>
+					<text wx:if="{{item.reply.id}}" class="nick-name">{{item.reply.nickName}}: </text>{{item.content}}</view>
 				<view class="delete-box" wx:if="{{userId == item.user.id}}">
 					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
 				</view>

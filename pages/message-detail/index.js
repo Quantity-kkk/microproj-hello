@@ -14,8 +14,9 @@ Page({
     userId: -1,
     page: 1,
     comment: null,
-    commentId: null,
-    commentTemplateId: null, // 评论模板ID
+    commentId: null,//评论-回复留言id
+    replyId: null,//评论-回复人Id
+    commentTemplateId: 'fFUWiiLXOov-mPo9xstNJVkXXXjNw7Qs_n_XjEeP-e0', // 评论模板ID
     focus: false, // 获取焦点
     showAction: false, // 是否显示操作菜单
     isEnd: false // 是否到底
@@ -40,69 +41,32 @@ Page({
    */
   getMessageDetail(messageId) {
     console.info(messageId);
-    //1.获取留言详情
-    this.setData({
-      message:{
-        id:messageId,
-        user:{
-          id:'ZXJDKXS',
-          nick_name:'奇思妙想',
-          avatar:'../../images/index-list/avatar/7.jpg'
-        },
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-        comment_count:1
-      }
-    })
-    //2.获取留言对应的评论详细
-    this.getComments(messageId);
 
-    /*
     const url = api.messageAPI + messageId + "/"
 
     wxutil.request.get(url).then((res) => {
       if (res.data.code == 200) {
         const message = res.data.data
+        //处理没有返回count的情况
+        if(!message.comment_count){
+          message.comment_count = 0
+        }
         this.setData({
           message: message
         })
         if ("id" in message) {
           this.getComments(messageId)
-          this.getStars(messageId)
-          this.getTemplateId()
+          // 暂不获取评论模板ID
+          // this.getTemplateId()
         }
       }
-    })*/
+    })
   },
 
   /**
    * 获取评论
    */
   getComments(messageId, page = 1, size = pageSize) {
-    let comments = [
-      {
-        user:{
-          avatar:'../../images/index-list/avatar/7.jpg',
-          id:'ZXJDKXS',
-          nick_name:'ZXJDKXS'
-        },
-        reply:{
-          id:'2',
-          type:'message',
-          nick_name:'文静'
-        },
-        id:'2',
-        content:'你是王大锤吗？',
-        create_time:'20小时前'
-      }
-    ]
-    this.setData({
-      page: (comments.length == 0 && page != 1) ? page - 1 : page,
-      isEnd: ((comments.length < pageSize) || (comments.length == 0 && page != 1)) ? true : false,
-      comments: page == 1 ? comments : this.data.comments.concat(comments)
-    })
-
-    /*
     const url = api.commentAPI + "message/" + messageId + "/"
     let data = {
       size: size,
@@ -122,7 +86,7 @@ Page({
           comments: page == 1 ? comments : this.data.comments.concat(comments)
         })
       }
-    })*/
+    })
   },
 
   /**
@@ -387,7 +351,8 @@ Page({
     this.setData({
       focus: true,
       commentId: this.data.comments[index].id,
-      placeholder: "@" + this.data.comments[index].user.nick_name
+      replyId: this.data.comments[index].writer, 
+      placeholder: "@" + this.data.comments[index].user.nickName
     })
   },
 
@@ -398,6 +363,7 @@ Page({
     this.setData({
       focus: true,
       commentId: null,
+      replyId: null,
       placeholder: "评论点什么吧..."
     })
   },
@@ -428,11 +394,14 @@ Page({
         const messageId = message.id
         let data = {
           content: comment,
-          message_id: messageId
+          messageId: messageId
         }
 
         if (that.data.commentId) {
-          data["comment_id"] = that.data.commentId
+          data["commentId"] = that.data.commentId
+        }
+        if (that.data.replyId) {
+          data["reply"] = that.data.replyId
         }
 
         wxutil.request.post(url, data).then((res) => {
@@ -484,6 +453,17 @@ Page({
 
           wxutil.request.delete(url).then((res) => {
             if (res.data.code == 200) {
+              //处理评论数量问题
+              let message = this.data.message;
+              message.comment_count--
+              if(message.comment_count <= 0){
+                message.comment_count = 0
+                message.has_comment = false
+              }
+              this.setData({
+                message: message
+              })
+              
               this.getComments(this.data.message.id)
 
               wx.lin.showMessage({

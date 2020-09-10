@@ -2,6 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
+const base64 = app.base64
 
 Page({
   data: {},
@@ -24,11 +25,13 @@ Page({
       wx.login({
         success(event) {
           data["code"] = event.code
-          const url = api.userAPI
+          //经过授权后，该信息是存在的
+          let userInfo = wxutil.getStorage("userInfo")
+          // data["id"] = 
+          const url = api.userAPI+"wxLogin"
 
           wxutil.request.post(url, data).then((res) => {
             if (res.data.code == 200) {
-              // 缓存用户详细信息
               wxutil.setStorage("userDetail", res.data.data)
               app.globalData.userDetail = res.data.data
               wx.lin.showMessage({

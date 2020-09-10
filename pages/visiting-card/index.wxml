@@ -7,17 +7,17 @@
 <view wx:if="{{user.id}}" class="header">
 	<view class="user-box">
 		<image class="avatar" src="{{user.avatar}}" />
-		<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">
-			<image class="gender-icon" src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />
+		<view wx:if="{{user.male && user.male != 0}}" class="gender-box {{user.male == 1 ? 'male' : 'female'}}">
+			<image class="gender-icon" src="../../images/icon_gender/{{user.male == 1 ? 'icon_male' : 'icon_female'}}.png" />
 		</view>
 		<view class="btn-box">
-			<l-button plain="{{user.has_follow}}" l-class="{{user.has_follow ? 'btn-unfollow' : ''}}" shape="semicircle" size="mini" bg-color="{{user.has_follow ? '#fff' : '#337559'}}" width="180" height="55" bind:lintap="onFollowTap">{{user.has_follow ? '取消关注' : '+ 关注'}}</l-button>
+			<l-button plain="{{user.isFriends}}" l-class="{{user.isFriends ? 'btn-unfollow' : ''}}" shape="semicircle" size="mini" bg-color="{{user.isFriends ? '#fff' : '#337559'}}" width="180" height="55" bind:lintap="onFollowTap">{{user.isFriends ? '删除好友' : '+ 好友'}}</l-button>
 		</view>
 	</view>
 	<text wx:if="{{user.nick_name}}" class="nick-name">{{user.nick_name}}</text>
 	<open-data wx:else class="nick-name" type="userNickName"></open-data>
 	<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>
-	<view class="follow-box">
+	<!-- <view class="follow-box">
 		<view class="follow follower" bindtap="gotoFollower">
 			<text class="num">{{user.follower ? user.follower : '0'}}</text>
 			<text class="text">关注{{genderText}}的</text>
@@ -26,38 +26,58 @@
 			<text class="num">{{user.following ? user.following : '0'}}</text>
 			<text class="text">{{genderText}}关注的</text>
 		</view>
-	</view>
+	</view> -->
 </view>
 
 <!-- Ta的动态 -->
 <l-tabs wx:if="{{user.id}}" id="tabs" animated animated-for-line active-color="#337559" l-header-class="tabs {{tabsFixed ? 'tabs-fixed' : ''}}" l-line-class="tabs-line" bind:linchange="changeTabs">
 	<l-tabpanel tab="留言板" key="comment" slot="comment">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="{{genderText}}还没有发表评论" nothing-class="nothing" />
-			<l-card data-id="{{item.message_id}}" bindtap="gotoTopicDetail" wx:for="{{messages}}" wx:key="item" l-class="card" l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left" title="{{item.create_time}}">
-				<view class="comment-top">
-					<view class="card-content">{{item.content}}</view>
-				</view>
-				<view class="comment-topic">
-					<image src="{{item.message.images[0]}}" class="{{item.message.images.length > 0 ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
-					<view class="comment-right">
-						<text class="{{item.message.user.id != -1 ? 'tab-nick-name' : 'tab-anon'}}" catchtap="{{item.message.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.message.user.id}}">{{item.message.user.nick_name}}</text>
-						<text class="card-content">{{item.message.content}}</text>
-					</view>
-				</view>
+			<nothing wx:if="{{messages.length == 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="{{genderText}}还没有留言" nothing-class="nothing" />
+			<view class="btn-edit" bindtap="onEditTap">
+				<l-icon name="edit" color="#fff" size="30" />
+			</view>
+			<l-card type="avatar" l-class="card" l-title-class="{{item.user.id != -1 ? 'card-title' : 'card-title-anon'}}" 
+						wx:for="{{messages}}" wx:key="item" wx:for-index="cardIndex" 
+						image="{{item.user.avatar}}" title="{{item.user.nickName}}" 
+						describe="{{item.create_time}}" bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
+						bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
+						data-user-id="{{item.user.id}}">
+						<view class="{{item.content.length >= 200 && !item.flod ? 'content-close' : 'avater-content'}}" data-id="{{item.id}}" bindtap="gotoDetail">{{item.content}}</view>
+						<view wx:if="{{item.content.length >= 200}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">{{item.flod ? '收起' : '全文'}}</view>
+
+						<view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+							<block wx:if="{{item.images.length == 1}}">
+								<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="widthFix" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+							<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">
+								<image class="column-two" wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="aspectFill" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+							<block wx:else>
+								<image wx:for="{{item.images}}" wx:key="item" src="{{item}}" mode="aspectFill" catchtap="previewImage" data-src="{{item}}" data-index="{{cardIndex}}" lazy-load />
+							</block>
+						</view>
+
+						<view class="avater-share-container">
+							<view class="like-container" data-id="{{item.id}}" bindtap="onCommentTap">
+								<l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
+								<view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
+							</view>
+						</view>
+						<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}" bindtap="onMoreTap" />
+						<!-- <view wx:if="{{userId == item.user.id}}" slot="more" class="delete-text" data-id="{{item.id}}" catchtap="deleteMessage" style="margin-top:0rpx !important">删除</view> -->
 			</l-card>
-			<l-loadmore wx:if="{{!isEndComment}}" show="{{loading}}" line />
-			<l-loadmore show="{{isEndComment && pageComment != 1}}" line type="end" />
+			<l-loadmore wx:if="{{!isEndMessage}}" show="{{loading}}" line />
+			<l-loadmore show="{{isEndMessage && page != 1}}" line type="end" />
+			<!-- 操作菜单 -->
+			<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}" bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+			<!-- 消息对话框 -->
+			<l-dialog />
 		</view>
 	</l-tabpanel>
-	
 </l-tabs>
-
-<!-- 操作菜单 -->
-<l-action-sheet l-title-class="action-title" />
 
 <!-- 消息提示 -->
 <l-message />
-
 <!-- nothing -->
 <nothing wx:if="{{!user.id}}" pic="../../images/icon_nothing/pic_profile.png" tip="该用户消失了" />

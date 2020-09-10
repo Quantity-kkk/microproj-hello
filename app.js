@@ -1,12 +1,14 @@
 const api = require("./config/api")
 const wxutil = require("./utils/wxutil")
+const base64 = require("./miniprogram_npm/js-base64/index")
 //app.js
 App({
   api: api,
   wxutil: wxutil,
+  base64: base64,
 
   globalData: {
-    // appId: wx.getAccountInfoSync().miniProgram.appId,
+    appId: wx.getAccountInfoSync().miniProgram.appId,
     githubURL: "https://github.com/YYJeffrey/july_client",
     userDetail: null
   },
@@ -65,7 +67,7 @@ App({
   getHeader() {
     let header = {}
     if (this.globalData.userDetail) {
-      header["Authorization"] = "Token " + this.globalData.userDetail.token
+      header["Authorization"] = "Bearer " + this.globalData.userDetail.token
     }
     return header
   },

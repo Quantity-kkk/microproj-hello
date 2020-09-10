@@ -92,17 +92,6 @@ Page({
             isAuth: true,
             user: userDetail
           })
-
-          const tabIndex = this.data.tabIndex
-          if (tabIndex == 0) {
-            this.getTopics(userId)
-          }
-          if (tabIndex == 1) {
-            this.getComments(userId)
-          }
-          if (tabIndex == 2) {
-            this.getStars(userId)
-          }
         }
       })
     }

@@ -44,7 +44,7 @@
 					</view>
 					<l-card type="avatar" l-class="card" l-title-class="{{item.user.id != -1 ? 'card-title' : 'card-title-anon'}}" 
 						wx:for="{{messages}}" wx:key="item" wx:for-index="cardIndex" 
-						image="{{item.user.avatar}}" title="{{item.user.nick_name}}" 
+						image="{{item.user.avatar}}" title="{{item.user.nickName}}" 
 						describe="{{item.create_time}}" bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
 						bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" 
 						data-user-id="{{item.user.id}}">

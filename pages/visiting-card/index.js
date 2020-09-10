@@ -10,22 +10,28 @@ Page({
     messages: [],
     comments: [],
     stars: [],
-    pageTopic: 1,
-    pageComment: 1,
-    pageStar: 1,
+    actionList: {},
+    messageIndex: -1,
+    userId: null,
+    page: 1,
     tabIndex: 0,
     tabsTop: 305,
     genderText: "Ta",
     tabsFixed: false, // Tabs是否吸顶
-    isEndTopic: false, // 话题是否到底
-    isEndStar: false, // 收藏是否到底
-    isEndComment: false, // 评论是否到底
+    isEndMessage: false, // 评论是否到底
     loading: false
   },
 
   onLoad(options) {
     const userId = options.userId
-    debugger
+    
+    let userDetail = app.globalData.userDetail
+    if(userDetail){
+      const currentUserId = userDetail.id
+      this.setData({
+        userId: currentUserId
+      })
+    }
     this.getUser(userId)
   },
 
@@ -45,53 +51,16 @@ Page({
    * 获取用户信息
    */
   getUser(userId) {
-    const url = api.userAPI + userId + "/"
+    const url = api.userAPI + "visit/" +userId + "/"
 
-    const user = {
-      gender:1,
-      nick_name:'奇思妙想',
-      avatar:'../../images/index-list/avatar/7.jpg',
-      id:'ZXJDKXS',
-      signature:null
-    }
-    let genderText = "Ta"
-    if (user.gender == 1) {
-      genderText = "他"
-    }
-    if (user.gender == 2) {
-      genderText = "她"
-    }
-
-    this.setData({
-      user: user,
-      genderText: genderText
-    })
-
-    // 获取Tabs高度
-    this.getTabsTop()
-
-    // 设置标题
-    wx.setNavigationBarTitle({
-      title: user.nick_name
-    })
-
-    // 标签页切换
-    const tabIndex = this.data.tabIndex
-
-    if (tabIndex == 0) {
-      this.getComments(userId)
-    }
-
-      
-    /*
     wxutil.request.get(url).then((res) => {
       if (res.data.code == 200) {
         const user = res.data.data
         let genderText = "Ta"
-        if (user.gender == 1) {
+        if (user.male == 1) {
           genderText = "他"
         }
-        if (user.gender == 2) {
+        if (user.male == 2) {
           genderText = "她"
         }
 
@@ -105,22 +74,13 @@ Page({
 
         // 设置标题
         wx.setNavigationBarTitle({
-          title: user.nick_name
+          title: user.nickName
         })
 
         // 标签页切换
-        const tabIndex = this.data.tabIndex
-        if (tabIndex == 0) {
-          this.getTopics(userId)
-        }
-        if (tabIndex == 1) {
-          this.getComments(userId)
-        }
-        if (tabIndex == 2) {
-          this.getStars(userId)
-        }
+        this.getMessages(userId)
       }
-    })*/
+    })
   },
 
   /**
@@ -150,131 +110,33 @@ Page({
     })
   },
 
+  
+
   /**
-   * 获取用户收藏
+   * 获取用户留言
    */
-  getStars(userId, pageStar = 1, size = pageSize) {
-    const url = api.starAPI + "user/" + userId + "/"
+  getMessages(userId, page = 1, size = pageSize) {
+    const url = api.messageAPI + "user/" + userId + "/"
     let data = {
       size: size,
-      page: pageStar
+      page: page
     }
 
-    if (this.data.isEndStar && pageStar != 1) {
+    if (this.data.isEndMessage && page != 1) {
       return
     }
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
-        const stars = res.data.data
+        const messages = res.data.data
         this.setData({
-          pageStar: (stars.length == 0 && pageStar != 1) ? pageStar - 1 : pageStar,
+          page: (messages.length == 0 && page != 1) ? page - 1 : page,
           loading: false,
-          isEndStar: ((stars.length < pageSize) || (stars.length == 0 && pageStar != 1)) ? true : false,
-          stars: pageStar == 1 ? stars : this.data.stars.concat(stars)
+          isEndMessage: ((messages.length < pageSize) || (messages.length == 0 && page != 1)) ? true : false,
+          messages: page == 1 ? messages : this.data.messages.concat(messages)
         })
       }
     })
-  },
-
-  /**
-   * 获取用户评论
-   */
-  getComments(userId, pageComment = 1, size = pageSize) {
-    let messages = [
-      {
-        user:{
-          id:'ZXJDKXS',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'奇妙幻想'
-        },
-        create_time:'2020-08-18 15:17:23',
-        id:'d4546dsdsad',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      }
-    ]
-    this.setData({
-      messages:messages
-    })
-
-    /*
-    const url = api.commentAPI + "user/" + userId + "/"
-    let data = {
-      size: size,
-      page: pageComment
-    }
-
-    if (this.data.isEndComment && pageComment != 1) {
-      return
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const comments = res.data.data
-        this.setData({
-          pageComment: (comments.length == 0 && pageComment != 1) ? pageComment - 1 : pageComment,
-          loading: false,
-          isEndComment: ((comments.length < pageSize) || (comments.length == 0 && pageComment != 1)) ? true : false,
-          comments: pageComment == 1 ? comments : this.data.comments.concat(comments)
-        })
-      }
-    })*/
   },
 
   /**
@@ -285,7 +147,7 @@ Page({
     const user = this.data.user
     if (this.data.user.has_follow) {
       wx.lin.showActionSheet({
-        title: "确定要取消关注" + user.nick_name + "吗？",
+        title: "确定要取消关注" + user.nickName + "吗？",
         showCancel: true,
         cancelText: "放弃",
         itemList: [{
@@ -356,30 +218,98 @@ Page({
   },
 
   /**
-   * 跳转到关注Ta的页面
+   * 展开操作菜单
    */
-  gotoFollower() {
-    wx.navigateTo({
-      url: "/pages/follower/index?userId=" + this.data.user.id + "&genderText=" + this.data.genderText
+  onMoreTap(event) {
+    const messageIndex = event.currentTarget.dataset.index
+    let actionList = [{
+      name: "分享",
+      color: "#666",
+      openType: "share"
+    }]
+
+    if (this.data.user.id == this.data.messages[messageIndex].user.id) {
+      actionList.push({
+        name: "删除",
+        color: "#d81e05"
+      })
+    }
+
+    this.setData({
+      actionList: actionList,
+      showAction: true,
+      messageIndex: messageIndex
+    })
+  },
+  
+  /**
+   * 点击操作菜单按钮
+   */
+  onActionItemtap(event) {
+    const index = event.detail.index
+    if (index == 1) {
+      // 删除话题
+      this.deleteMessage()
+    }
+  },
+
+  /**
+   * 删除话题
+   */
+  deleteMessage() {
+    wx.lin.showDialog({
+      type: "confirm",
+      title: "提示",
+      content: "确定要删除该留言？",
+      success: (res) => {
+        if (res.confirm) {
+          const messageId = this.data.messages[this.data.messageIndex].id
+          const url = api.messageAPI + messageId + "/"
+
+          wxutil.request.delete(url).then((res) => {
+            if (res.data.code == 200) {
+              const userId = this.data.user.id
+              this.getMessages(userId,this.data.pageMessage)
+
+              wx.lin.showMessage({
+                type: "success",
+                content: "删除成功！"
+              })
+            } else {
+              wx.lin.showMessage({
+                type: "error",
+                content: "删除失败！"
+              })
+            }
+          })
+        }
+      }
     })
   },
 
   /**
-   * 跳转到Ta关注的页面
+   * 点击留言按钮
    */
-  gotoFollowing() {
-    wx.navigateTo({
-      url: "/pages/following/index?userId=" + this.data.user.id + "&genderText=" + this.data.genderText
-    })
+  onEditTap() {
+    if (app.globalData.userDetail) {
+      const userInfo = this.data.user
+      wx.navigateTo({
+        url: "/pages/message-edit/index?userId="+userInfo.id
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   },
 
   /**
-   * 跳转话题详情页
+   * 跳转留言详情页
    */
-  gotoTopicDetail(event) {
-    const topicId = event.currentTarget.dataset.id
+  gotoDetail(event) {
+    const messageId = event.currentTarget.dataset.id
     wx.navigateTo({
-      url: "/pages/topic-detail/index?topicId=" + topicId
+      url: "/pages/message-detail/index?messageId=" + messageId
     })
   },
 
@@ -403,18 +333,9 @@ Page({
     this.setData({
       loading: true
     })
-    if (tabIndex == 0) {
-      const page = this.data.pageTopic
-      this.getTopics(userId, page + 1)
-    }
-    if (tabIndex == 1) {
-      const page = this.data.pageComment
-      this.getComments(userId, page + 1)
-    }
-    if (tabIndex == 2) {
-      const page = this.data.pageStar
-      this.getStars(userId, page + 1)
-    }
+
+    const page = this.data.page
+    this.getMessages(userId, page + 1)
   },
 
   onPageScroll(event) {
