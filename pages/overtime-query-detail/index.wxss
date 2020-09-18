@@ -1,0 +1,27 @@
+/* pages/overtime-query-detail/index.wxss */
+page{
+  display: flex;
+  justify-content: center;
+}
+
+.header-class{
+  background: #21a4b6;
+  color: #FFF !important;
+}
+
+.opt-class{
+  border-bottom:1px solid #00F; color:#00F
+}
+
+.content-close {
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333;
+  font-size: 28rpx;
+  margin: 10rpx 0rpx;
+  padding: 10rpx 10rpx !important;
+}

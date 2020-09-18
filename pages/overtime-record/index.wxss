@@ -1,0 +1,34 @@
+/* pages/overtime-record/index.wxss */
+.title {
+  margin-left: 30rpx;
+  color: #999;
+  line-height: 60rpx;
+  font-size: 28rpx;
+}
+
+.input-text {
+  font-size: 28rpx;
+  background: #fff;
+}
+
+.input-radio {
+  padding-left: 30rpx;
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  background: #fff;
+}
+
+.pls-class {
+  color:#9a9a9a
+}
+
+.textarea-box {
+  display: flex;
+  background: #fff;
+}
+
+.btn-save {
+  display: block;
+  margin: 60rpx 235rpx;
+}

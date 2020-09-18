@@ -7,13 +7,13 @@
   <view class="backup-center">
     <view class="backup-center-container">
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:rgba(244,181,244,0.8);color:rgba(255,255,255,1);font-size:550;">加班登记</button>
+        <button class="center-button" data-record-id="overtime" style="background:rgba(244,181,244,0.8);color:rgba(255,255,255,1);font-size:550;" bindtap="onRecordTap">加班登记</button>
       </view>
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:rgba(26,246,151,0.8);color:rgba(255,255,255,1);font-size:550;">餐补登记</button>
+        <button class="center-button" data-record-id="otsubsidy" style="background:rgba(26,246,151,0.8);color:rgba(255,255,255,1);font-size:550;"  bindtap="onRecordTap">餐补登记</button>
       </view>
       <view class="backup-center-container-view">
-        <button class="center-button" style="background:rgba(254,199,89,0.8);color:rgba(255,255,255,1);font-size:550;">团建登记</button>
+        <button class="center-button" data-record-id="activity" style="background:rgba(254,199,89,0.8);color:rgba(255,255,255,1);font-size:550;"  bindtap="onRecordTap">团建登记</button>
       </view>
     </view>
   <!-- button样式不受控制，使用view包一层 -->
@@ -21,26 +21,26 @@
 
   <view class="backup-items">
     <view class="item-container">
-      <view class="item-container-view">
-        <image class="item-buttion" mode="aspectFit" src="../../images/backup/overtime-search.png"></image>
-        <text class="item-text">加班查询</text>
+      <view class="item-container-view" data-query-id="overtime" bindtap="onQueryTap">
+        <image class="item-buttion" data-query-id="overtime" mode="aspectFit" src="../../images/backup/overtime-search.png"></image>
+        <text class="item-text" data-query-id="overtime">加班查询</text>
       </view>
-      <view class="item-container-view">
-        <image class="item-buttion" mode="aspectFit"  src="../../images/backup/repast-search.png"></image>
-        <text class="item-text">餐补查询</text>
+      <view class="item-container-view" data-query-id="otsubsidy" bindtap="onQueryTap">
+        <image class="item-buttion" data-query-id="otsubsidy" mode="aspectFit"  src="../../images/backup/repast-search.png"></image>
+        <text class="item-text" data-query-id="otsubsidy">餐补查询</text>
       </view>
-      <view class="item-container-view">
-        <image class="item-buttion" mode="aspectFit" src="../../images/backup/activity-search.png"></image>
-        <text class="item-text">团建查询</text>
+      <view class="item-container-view" data-query-id="activity" bindtap="onQueryTap">
+        <image class="item-buttion" data-query-id="activity" mode="aspectFit" src="../../images/backup/activity-search.png"></image>
+        <text class="item-text" data-query-id="activity">团建查询</text>
       </view>
-      <view class="item-container-view">
+      <!-- <view class="item-container-view">
         <image class="item-buttion" mode="aspectFit" src="../../images/backup/lanch-vote.png"></image>
         <text class="item-text">用餐登记</text>
       </view>
       <view class="item-container-view">
         <image class="item-buttion" mode="aspectFit" src="../../images/backup/lanch-search.png"></image>
         <text class="item-text">用餐查询</text>
-      </view>
+      </view> -->
     </view>
   </view>
 

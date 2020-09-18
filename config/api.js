@@ -10,9 +10,11 @@ module.exports = {
   holeAPI: baseAPI + "hole/", // 树洞接口
   userAPI: baseAPI + "user/", // 用户接口
   followingAPI: baseAPI + "following/", // 关注接口
+  friendAPI: baseAPI + "friend/", // 好友接口
   commentAPI: baseAPI + "comment/", // 评论接口
   starAPI: baseAPI + "star/", // 收藏接口
   templateAPI: baseAPI + "template/", // 模板接口
-  messageAPI: baseAPI + "message/", // 消息接口
-  chatAPI: socketAPI + "chat" // 聊天接口
+  messageAPI: baseAPI + "message/", // 留言接口
+  backupAPI: baseAPI + "backup/", // 备忘录相关接口
+  chatAPI: socketAPI + "chat", // 聊天接口
 }

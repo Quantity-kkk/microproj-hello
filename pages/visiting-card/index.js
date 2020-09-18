@@ -142,34 +142,34 @@ Page({
   /**
    * 点击关注或取消关注按钮
    */
-  onFollowTap() {
+  onFriendTap() {
     const that = this
     const user = this.data.user
-    if (this.data.user.has_follow) {
+    if (this.data.user.isFriends) {
       wx.lin.showActionSheet({
-        title: "确定要取消关注" + user.nickName + "吗？",
+        title: "确定要删除好友" + user.nickName + "吗？",
         showCancel: true,
         cancelText: "放弃",
         itemList: [{
-          name: "取消关注",
+          name: "删除好友",
           color: "#666",
         }],
         success() {
-          that.followOrCancel(user.id, "取消关注")
+          that.friendOrCancel(user.id, "删除好友")
         }
       })
     } else {
-      this.followOrCancel(user.id, "关注")
+      this.friendOrCancel(user.id, "添加好友")
     }
   },
 
   /**
    * 关注或取关
    */
-  followOrCancel(userId, msg) {
-    const url = api.followingAPI
+  friendOrCancel(userId, msg) {
+    const url = api.friendAPI
     const data = {
-      "follow_user_id": userId
+      "friendUserId": userId
     }
 
     wxutil.request.post(url, data).then((res) => {
@@ -179,14 +179,14 @@ Page({
           content: msg + "成功！",
         })
         let user = this.data.user
-        user.has_follow = !user.has_follow
+        user.isFriends = !user.isFriends
         this.setData({
           user: user
         })
-      } else if (res.data.message == "Can Not Following Yourself") {
+      } else if (res.data.message == "Can Not Add Yourself") {
         wx.lin.showMessage({
           type: "error",
-          content: "不能关注自己",
+          content: "不能添加自己",
         })
       } else {
         wx.lin.showMessage({
@@ -241,7 +241,7 @@ Page({
       messageIndex: messageIndex
     })
   },
-  
+
   /**
    * 点击操作菜单按钮
    */

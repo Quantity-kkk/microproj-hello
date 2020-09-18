@@ -53,6 +53,11 @@
 </scroll-view>
 <!-- 消息提示 -->
 <l-message />
-
+<!-- 下拉层 -->
+<l-popup show="{{showPopup}}" animation content-align="center" bind:lintap="togglePopup" z-index="99">
+	<view class="popup">
+		<image class="qr_like" data-src="https://img.kyqzwj.top/qr/qr_like.jpg" src="https://img.kyqzwj.top/qr/qr_like.jpg" bindtap="previewImage" />
+	</view>
+</l-popup>
 <!-- 消息对话框 -->
 <l-dialog />

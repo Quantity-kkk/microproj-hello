@@ -245,4 +245,12 @@ Page({
       }
     })
   },
+  /**
+   * 展开或收起弹出层
+   */
+  togglePopup() {
+    this.setData({
+      showPopup: !this.data.showPopup
+    })
+  },
 })

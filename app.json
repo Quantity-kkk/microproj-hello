@@ -8,7 +8,19 @@
     "pages/zone/zone",
     "pages/auth/index",
     "pages/message-detail/index",
-    "pages/message-edit/index"
+    "pages/message-edit/index",
+    "pages/user-edit/index",
+    "pages/images-cropper/index",
+    "pages/overtime-record/index",
+    "pages/otsubsidy-record/index",
+    "pages/activity-record/index",
+    "pages/overtime-query/index",
+    "pages/overtime-query-summary/index",
+    "pages/overtime-query-detail/index",
+    "pages/activity-query-detail/index",
+    "pages/otsubsidy-query/index",
+    "pages/otsubsidy-query-summary/index",
+    "pages/activity-query/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,7 +43,6 @@
     "l-index-anchor": "./miniprogram_npm/lin-ui/index-anchor/index",
     "l-segment": "./miniprogram_npm/lin-ui/segment/index",
     "l-segment-item": "./miniprogram_npm/lin-ui/segment-item/index",
-
     "l-tabs": "./components/tabs/index",
     "l-tabpanel": "./components/tabpanel/index",
     "l-card": "./components/card/index",

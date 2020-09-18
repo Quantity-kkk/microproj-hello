@@ -1,38 +1,6 @@
 <!-- pages/zone/zone.wxml -->
 <!-- 空间页面： 消息、留言板、好友-->
 <l-tabs id="tabs" animated animated-for-line active-key="comment" active-color="#337559" l-header-class="tabs {{tabsFixed ? 'tabs-fixed' : ''}}" l-line-class="tabs-line" bind:linchange="changeTabs">
-	<l-tabpanel tab="消息" key="topic" slot="topic">
-
-		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-			<nothing wx:if="{{informations.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有收到消息" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			
-			<!-- 评论： message 留言：xxxx、comment 评论:、reply 回复xxx: -->
-			<view class="comment-box" wx:if="{{informations.length > 0}}">
-				<view class="comment" wx:for="{{informations}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
-					<image class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard" />
-					<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
-						<view class="comment-top">
-							<view class="nick-name" data-user-id="{{item.user.id}}" catchtap="gotoVisitingCard">{{item.user.nick_name}}</view>
-							<view class="time">{{item.create_time}}</view>
-						</view>
-						<view class="comment-bottom">
-							<view class="content">
-								<text wx:if="{{item.reply_user.id}}">回复</text>
-								<text wx:if="{{item.reply_user.id}}" class="nick-name">{{item.reply_user.nick_name}}: </text>{{item.content}}
-							</view>
-						</view>
-					</view>
-				</view>
-
-				<l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading"/>
-				<l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end"/>
-			</view>
-			<!-- !评论 -->
-		</view>
-		<!-- tab content -->
-	</l-tabpanel>
-
-
 	<l-tabpanel tab="留言板" key="comment" slot="comment">
 
 			<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
@@ -91,9 +59,9 @@
 
 	<l-tabpanel tab="好友" key="star" slot="star">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
-			<nothing wx:if="{{friends.length == 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有添加好友" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<nothing wx:if="{{nameData.length == 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有添加好友" nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 
-			<l-index-list
+			<l-index-list wx:if="{{nameData.length > 0}}"
 				scroll-top="{{scrollTop}}"
 				l-selected-class="l-selected-class"
 				l-tip-class="l-tip-class"
@@ -104,11 +72,11 @@
 				l-tip-text-class="l-tip-text-class">
 				<block wx:for="{{sideBarData.length}}" wx:key="index" wx:for-index="anchorIndex">
 					<l-index-anchor/>
-					<block wx:for="{{2}}" wx:key="index" wx:for-index="itemIndex">
+					<block wx:for="{{nameData[anchorIndex].length}}" wx:key="index" wx:for-index="itemIndex">
 						<view class="person-item">
-							<image lazy-load="{{true}}" data-avatar-id="{{anchorIndex*2+itemIndex+1}}" catch:tap="onTapAvatar" class="person-avatar"
-										src="../../images/index-list/avatar/7.jpg"></image>
-							<view class="person-name">{{nameData[anchorIndex][itemIndex]}}</view>
+							<image lazy-load="{{true}}" data-avatar-id="{{nameData[anchorIndex][itemIndex].id}}" catch:tap="onTapAvatar" class="person-avatar"
+										src="{{nameData[anchorIndex][itemIndex].avatar}}"></image>
+							<view class="person-name">{{nameData[anchorIndex][itemIndex].nickName}}</view>
 						</view>
 					</block>
 				</block>

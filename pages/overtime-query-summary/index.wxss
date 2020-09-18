@@ -1,0 +1,14 @@
+/* pages/overtime-query-summary/index.wxss */
+.header-class{
+  background: #21a4b6;
+  color: #FFF !important;
+}
+
+.opt-class{
+  border-bottom:1px solid #00F; color:#00F
+}
+
+page{
+  display: flex;
+  justify-content: center;
+}

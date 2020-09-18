@@ -1,0 +1,17 @@
+/* pages/otsubsidy-query/index.wxss */
+.title {
+  margin-left: 30rpx;
+  color: #999;
+  line-height: 60rpx;
+  font-size: 28rpx;
+}
+
+.input-text {
+  font-size: 28rpx;
+  background: #fff;
+}
+
+.btn-save {
+  display: block;
+  margin: 60rpx 235rpx;
+}

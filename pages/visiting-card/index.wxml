@@ -11,7 +11,7 @@
 			<image class="gender-icon" src="../../images/icon_gender/{{user.male == 1 ? 'icon_male' : 'icon_female'}}.png" />
 		</view>
 		<view class="btn-box">
-			<l-button plain="{{user.isFriends}}" l-class="{{user.isFriends ? 'btn-unfollow' : ''}}" shape="semicircle" size="mini" bg-color="{{user.isFriends ? '#fff' : '#337559'}}" width="180" height="55" bind:lintap="onFollowTap">{{user.isFriends ? '删除好友' : '+ 好友'}}</l-button>
+			<l-button plain="{{user.isFriends}}" l-class="{{user.isFriends ? 'btn-unfollow' : ''}}" shape="semicircle" size="mini" bg-color="{{user.isFriends ? '#fff' : '#337559'}}" width="180" height="55" bind:lintap="onFriendTap">{{user.isFriends ? '删除好友' : '+ 好友'}}</l-button>
 		</view>
 	</view>
 	<text wx:if="{{user.nick_name}}" class="nick-name">{{user.nick_name}}</text>
@@ -76,7 +76,8 @@
 		</view>
 	</l-tabpanel>
 </l-tabs>
-
+<!-- 操作菜单 -->
+<l-action-sheet l-title-class="action-title" />
 <!-- 消息提示 -->
 <l-message />
 <!-- nothing -->

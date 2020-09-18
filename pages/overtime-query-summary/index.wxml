@@ -1,0 +1,12 @@
+<!--pages/overtime-query-summary/index.wxml-->
+<view>
+  <table 
+    header-row-class-name="header-class"
+    headers="{{tableHeader}}" 
+    data="{{ row }}" 
+    stripe="{{ stripe }}" 
+    border="{{ border }}" 
+    no-data-msg="{{ msg }}"
+    bind:rowClick="onRowClick"
+  />
+</view>

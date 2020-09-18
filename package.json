@@ -6,6 +6,7 @@
   "dependencies": {
     "js-base64": "^3.4.5",
     "lin-ui": "^0.8.7",
+    "miniprogram-table-component": "^1.1.0",
     "weui": "^2.3.0"
   },
   "devDependencies": {},

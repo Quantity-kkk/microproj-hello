@@ -1,4 +1,8 @@
 // pages/backup.js
+const app = getApp()
+const api = app.api
+const wxutil = app.wxutil
+
 Page({
 
   /**
@@ -62,5 +66,29 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  onRecordTap: function(event){
+    const recordId = event.target.dataset.recordId
+    wx.navigateTo({
+      url: "/pages/"+recordId+"-record/index"
+    })
+    // if (app.globalData.userDetail) {
+    //   const recordId = event.target.dataset.recordId
+    //   wx.navigateTo({
+    //     url: "/pages/"+recordId+"-record/index"
+    //   })
+    // } else {
+    //   wx.navigateTo({
+    //     url: "/pages/auth/index"
+    //   })
+    // }
+  },
+  onQueryTap: function(event){
+    const queryId = event.target.dataset.queryId
+    wx.navigateTo({
+      url: "/pages/"+queryId+"-query/index"
+    })
   }
+
+
 })

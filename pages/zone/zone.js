@@ -4,36 +4,8 @@ const api = app.api
 const wxutil = app.wxutil
 // 每页显示条数
 const pageSize = 16 
-
-const sideBarData = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'
-];
-
-const nameData = [
-  ['安冉', '艾浩宇'],
-  ['白昕玥', '包博坤'],
-  ['陈麟', '曹毛毛'],
-  ['邓波光', '董睿希'],
-  ['鄂卓烆', '洱惜文'],
-  ['冯月滢', '范源'],
-  ['郭若诗', '高薇竹'],
-  ['黄琪琪', '胡纩鸯'],
-  ['蒋馥蔓', '金倜厅'],
-  ['孔薇竹', '康艳霞'],
-  ['李舒旬', '刘笑'],
-  ['马亦', '孟熠彤'],
-  ['倪靓', '牛彗伶'],
-  ['欧玉兰', '欧阳漂泊'],
-  ['潘静', '皮文涛'],
-  ['钱卫国', '秦健容'],
-  ['任倩倩', '荣盈盈'],
-  ['孙桢', '沈业轩'],
-  ['陶小树', '唐子翊'],
-  ['吴洁立', '王紫耘'],
-  ['许子豪', '谢亚希'],
-  ['杨思远', '尤庭亮'],
-  ['赵容', '周承瑶']
-];
+const sideBarData = []
+const nameData = []
 
 Page({
 
@@ -41,75 +13,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nameData: nameData,
-    sideBarData: sideBarData,
+    nameData,
+    sideBarData,
     user: {},
-    informations:[
-      {
-        user:{
-          avatar:'../../images/index-list/avatar/7.jpg',
-          id:'ZXJDKXS',
-          nick_name:'ZXJDKXS'
-        },
-        reply:{
-          id:'2',
-          type:'message',
-          nick_name:'文静'
-        },
-        content:'你是猪吗',
-        id:'1',
-        create_time:'20小时前'
-      },
-      {
-        user:{
-          avatar:'../../images/index-list/avatar/7.jpg',
-          id:'ZXJDKXS',
-          nick_name:'ZXJDKXS'
-        },
-        reply:{
-          id:'2',
-          type:'message',
-          nick_name:'文静'
-        },
-        content:'你是王大锤吗？',
-        id:'2',
-        create_time:'20小时前'
-      }
-    ],
-    messages: [
-      {
-        user:{
-          id:'ZXJDKXS',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'奇妙幻想'
-        },
-        create_time:'2020-08-18 15:17:23',
-        id:'d4546dsdsad',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      },
-      {
-        user:{
-          id:'ZXJDKXS1',
-          avatar:'../../images/index-list/avatar/7.jpg',
-          nick_name:'静静猪'
-        },
-        create_time:'2020-08-18 15:30:23',
-        id:'d4546dsdsad2',
-        content:'给作者点赞呀！',
-        images:['../../images/backup/backup-background-01.jpg'],
-      }
-    ],
-    friends: [
-      {
-        "anchor":"A",
-        "list":[{"name":"Amos"},{"name":"Ada"}]
-      },
-      {
-        "anchor":"B",
-        "list":[{"name":"Balan"},{"name":"Ben"}]
-      },
-    ],
+    informations:[],
+    messages: [],
+    friends: [],
     actionList: [],
     messageIndex: -1,
     pageMessage: 1,
@@ -117,7 +26,7 @@ Page({
     isEndInformation: false,
     isEndMessage: false,
     height: 1206, // 话题区高度
-    tabIndex: 1,
+    tabIndex: 0,
     tabsTop: 255,
     tabsFixed: true, // Tabs是否吸顶
     messageBrief: null,
@@ -226,10 +135,7 @@ Page({
         this.getMessages(userId)
       }
       if (tabIndex == 1) {
-        this.getMessages(userId)
-      }
-      if (tabIndex == 2) {
-        this.getStars(userId)
+        this.getFriends(userId)
       }
     }
   },
@@ -284,11 +190,9 @@ Page({
           if (tabIndex == 0) {
             this.getMessages(userId)
           }
+
           if (tabIndex == 1) {
-            this.getMessages(userId)
-          }
-          if (tabIndex == 2) {
-            this.getStars(userId)
+            this.getFriends(userId)
           }
         }
       })
@@ -440,6 +344,47 @@ Page({
     })
   },
 
+  getFriends(userId){
+    const url = api.friendAPI
+    wxutil.request.get(url).then((res) => {
+      if(res.data.code == 200){
+        const friends = res.data.data
+        //对好友列表进行一下处理
+        if(friends){
+          let sideBarData = []
+          let nameData = []
+          //第一次转换
+          let dic = {}
+          for(let friend of friends){
+            let list = dic[friend.anchor] ? dic[friend.anchor] : []
+            list.push(friend)
+            dic[friend.anchor]=list
+          }
+          //第二次转换
+          let dicList = []
+          for(let anchor in dic){
+            dicList.push({
+              'anchor': anchor,
+              'list': dic[anchor].sort((a,b) => a.nickName<b.nickName?-1:a.nickName==b.nickName?0:1)
+            })
+          }
+          dicList.sort((a,b) => a.anchor<b.anchor?-1:a.anchor==b.anchor?0:1)
+          //对第二次转换的结果进行排序
+          for(var item of dicList){
+            sideBarData.push(item.anchor)
+            nameData.push(item.list)
+          }
+          this.setData({
+            sideBarData: sideBarData,
+            nameData: nameData
+          })
+          // console.info(sideBarData)
+          // console.info(nameData)
+        }
+      }
+    })
+  },
+
   /**
    * 图片预览
    */
@@ -498,4 +443,14 @@ Page({
       }
     })
   },
+  /**
+   * 点击好友头像
+   */
+  onTapAvatar(event){
+    console.info(event);
+    const userId = event.target.dataset.avatarId
+    wx.navigateTo({
+      url: "/pages/visiting-card/index?userId=" + userId
+    })
+  }
 })
