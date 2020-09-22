@@ -90,8 +90,15 @@ Page({
     let start = this.data.overDateStart;
     let end = this.data.overDateEnd;
     let peopleName = this.data.peopleName;
-    wx.navigateTo({
-      url: "/pages/overtime-query-summary/index?overDateStart="+start+"&overDateEnd="+end+"&peopleName="+peopleName
-    })
+
+    if (app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/overtime-query-summary/index?overDateStart="+start+"&overDateEnd="+end+"&peopleName="+peopleName
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   }
 })

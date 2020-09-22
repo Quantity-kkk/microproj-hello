@@ -1,4 +1,8 @@
 // pages/otsubsidy-record/index.js
+const app = getApp()
+const api = app.api
+const wxutil = app.wxutil
+
 Page({
 
   /**
@@ -8,64 +12,9 @@ Page({
     peopleName: null,
     overDate: null,
     cost: null,
-    overtimeDesc: null
+    overTimeDesc: null
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
   /**
    * 设置加班人员名字
    */
@@ -87,9 +36,9 @@ Page({
   /**
    * 设置加班原因
    */
-  setOvertimeDesc: function(event){
+  setOverTimeDesc: function(event){
     this.setData({
-      overtimeDesc: event.detail.value
+      overTimeDesc: event.detail.value
     })
   },
 
@@ -103,14 +52,13 @@ Page({
   },
 
   saveInfo: function(event){
-    this.commitRecord()
-    // if (app.globalData.userDetail) {
-    //   this.commitRecord()
-    // } else {
-    //   wx.navigateTo({
-    //     url: "/pages/auth/index"
-    //   })
-    // }
+    if (app.globalData.userDetail) {
+      this.commitRecord()
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   },
 
 
@@ -118,7 +66,7 @@ Page({
     const peopleName = this.data.peopleName
     const overDate = this.data.overDate
     const cost = this.data.cost
-    const overtimeDesc = this.data.overtimeDesc
+    const overTimeDesc = this.data.overTimeDesc
     if (!wxutil.isNotNull(peopleName) || !wxutil.isNotNull(overDate) || !wxutil.isNotNull(cost)) {
       wx.lin.showMessage({
         type: "error",
@@ -133,7 +81,7 @@ Page({
       peopleName: peopleName,
       overDate: overDate,
       cost: cost,
-      overtimeDesc: overtimeDesc
+      overTimeDesc: overTimeDesc
     }
 
     // 提交加班记录
@@ -143,7 +91,8 @@ Page({
         this.setData({
           peopleName: null,
           overDate: null,
-          cost: 0
+          cost: 0,
+          overTimeDesc: null
         })
 
         wx.lin.showMessage({

@@ -1,7 +1,7 @@
 <!--pages/overtime-record/index.wxml-->
 <text class="title">加班日期（必填）</text>
 <picker mode="date" bindchange="setOverDate">
-  <l-input l-class="input-text" hide-label value='{{overDate}}' placeholder='选择加班日期'/>
+  <l-input l-class="input-text" hide-label disabled="{{true}}" value='{{overDate}}' placeholder='选择加班日期'/>
 </picker>
 <text class="title">加班人员（必填）</text>
 <view class="textarea-box">
@@ -9,7 +9,7 @@
 </view>
 <text class="title">加班说明</text>
 <view class="textarea-box">
-	<l-textarea l-class="input-textarea" placeholder="简要描述加班原因" border="{{false}}" maxlength="255" value="{{overtimeDesc}}" bind:lininput="setOvertimeDesc" />
+	<l-textarea l-class="input-textarea" placeholder="简要描述加班原因" border="{{false}}" maxlength="255" value="{{overTimeDesc}}" bind:lininput="setOverTimeDesc" />
 </view>
 <text class="title">餐补登记</text>
 <l-radio-group current="{{cost}}" placement="row" l-class="input-radio" bind:linchange="onChangeCost">

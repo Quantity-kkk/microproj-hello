@@ -1,11 +1,16 @@
 // pages/activity-query/index.js
+const app = getApp()
+const api = app.api
+const wxutil = app.wxutil
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    activityDateStart: null,
+    activityDateEnd: null
   },
 
   /**
@@ -64,28 +69,29 @@ Page({
 
   },
   
-  setOverDateStart: function(event){
+  setActivityStart: function(event){
     this.setData({
-      overDateStart: event.detail.value
+      activityDateStart: event.detail.value
     })
   },
-  setOverDateEnd: function(event){
+  setActivityEnd: function(event){
     this.setData({
-      overDateEnd: event.detail.value
+      activityDateEnd: event.detail.value
     })
   },
-  setPeopleName: function(event){
-    this.setData({
-      peopleName: event.detail.value
-    })
-  },
+
   queryInfo: function(){
     //获取参数，跳转过去
-    let start = this.data.overDateStart;
-    let end = this.data.overDateEnd;
-    let peopleName = this.data.peopleName;
-    wx.navigateTo({
-      url: "/pages/overtime-query-summary/index?overDateStart="+start+"&overDateEnd="+end+"&peopleName="+peopleName
-    })
+    if (app.globalData.userDetail) {
+      let start = this.data.activityDateStart;
+      let end = this.data.activityDateEnd;
+      wx.navigateTo({
+        url: "/pages/activity-query-detail/index?activityDateStart="+start+"&activityDateEnd="+end
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   }
 })

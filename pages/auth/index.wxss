@@ -21,4 +21,10 @@
 
 .btn-auth {
   margin-top: 85rpx;
+  margin-left: 5rpx;
+}
+
+.btn-auth-reject{
+  margin-top: 85rpx;
+  margin-right: 5rpx;
 }

@@ -1,17 +1,17 @@
 <!--pages/otsubsidy-record/index.wxml-->
 <text class="title">加班日期（必填）</text>
 <picker mode="date" bindchange="setOverDate">
-  <l-input l-class="input-text" hide-label value='{{overDate}}' placeholder='选择加班日期'/>
+  <l-input l-class="input-text" hide-label disabled="{{true}}" value='{{overDate}}' placeholder='选择加班日期'/>
 </picker>
 <text class="title">加班人员（必填）</text>
 <view class="textarea-box">
-	<l-textarea l-class="input-textarea" placeholder="请输入加班人员名字" border="{{false}}" maxlength="512" value="{{peopleName}}" bind:lininput="setPeopleName" />
+	<l-textarea l-class="input-textarea" placeholder="请输入餐补人员名字" border="{{false}}" maxlength="512" value="{{peopleName}}" bind:lininput="setPeopleName" />
 </view>
 <text class="title">餐补金额（必填）</text>
 <l-input placeholder="请输入餐补金额" type="number" hide-label value="{{cost}}" maxlength="20" l-class="input-text" bind:lininput="setCost" />
 <text class="title">加班说明</text>
 <view class="textarea-box">
-	<l-textarea l-class="input-textarea" placeholder="简要描述加班原因" border="{{false}}" maxlength="255" value="{{overtimeDesc}}" bind:lininput="setOvertimeDesc" />
+	<l-textarea l-class="input-textarea" placeholder="简要描述加班原因" border="{{false}}" maxlength="255" value="{{overTimeDesc}}" bind:lininput="setOverTimeDesc" />
 </view>
 
 <l-button bg-color="#337559" width="280" l-class="auth-btn" l-class="btn-save" bind:lintap="saveInfo">保存</l-button>

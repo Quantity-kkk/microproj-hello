@@ -9,6 +9,9 @@ Page({
 
   onLoad() {},
 
+  cancelAuth: function(){
+    wx.navigateBack()
+  },
   /**
    * 授权
    */

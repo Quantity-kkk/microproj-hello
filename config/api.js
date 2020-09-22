@@ -1,5 +1,7 @@
 // const baseAPI = "https://api.july.yejiefeng.com/api/v1/"
-const baseAPI = "http://localhost:8080/v1/"
+// const baseAPI = "http://localhost:8080/v1/"
+const baseAPI = "https://api.kyqzwj.top/v1/"
+
 const socketAPI = "wss://api.july.yejiefeng.com/"
 
 module.exports = {

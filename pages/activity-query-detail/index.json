@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "table": "../../../miniprogram_npm/miniprogram-table-component"
+  }
 }

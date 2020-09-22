@@ -72,6 +72,7 @@ Page({
     wx.navigateTo({
       url: "/pages/"+recordId+"-record/index"
     })
+
     // if (app.globalData.userDetail) {
     //   const recordId = event.target.dataset.recordId
     //   wx.navigateTo({

@@ -92,9 +92,9 @@ Page({
   /**
    * 设置加班原因
    */
-  setOvertimeDesc: function(event){
+  setOverTimeDesc: function(event){
     this.setData({
-      overtimeDesc: event.detail.value
+      overTimeDesc: event.detail.value
     })
   },
 
@@ -108,14 +108,13 @@ Page({
   },
 
   saveInfo: function(event){
-    this.commitRecord()
-    // if (app.globalData.userDetail) {
-    //   this.commitRecord()
-    // } else {
-    //   wx.navigateTo({
-    //     url: "/pages/auth/index"
-    //   })
-    // }
+    if (app.globalData.userDetail) {
+      this.commitRecord()
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   },
 
 
@@ -123,7 +122,7 @@ Page({
     const peopleName = this.data.peopleName
     const overDate = this.data.overDate
     const cost = this.data.cost
-    const overtimeDesc = this.data.overtimeDesc
+    const overtimeDesc = this.data.overTimeDesc
     if (!wxutil.isNotNull(peopleName) || !wxutil.isNotNull(overDate)) {
       wx.lin.showMessage({
         type: "error",
@@ -138,7 +137,7 @@ Page({
       peopleName: peopleName,
       overDate: overDate,
       cost: cost > 0 ? true : false,
-      overtimeDesc: overtimeDesc
+      overTimeDesc: overtimeDesc
     }
 
     // 提交加班记录

@@ -7,8 +7,6 @@
 <picker mode="date" bindchange="setOverDateEnd">
   <l-input l-class="input-text" disabled="{{true}}" hide-label value='{{overDateEnd}}' placeholder='选择查询结束日期'/>
 </picker>
-<text class="title">姓名</text>
-<l-input placeholder="请输入姓名" hide-label value="{{peopleName}}" maxlength="20" l-class="input-text" bind:lininput="setPeopleName" />
 
 <l-button bg-color="#337559" width="280" l-class="auth-btn" l-class="btn-save" bind:lintap="queryInfo">查询</l-button>
 

@@ -1,2 +1,12 @@
 <!--pages/activity-query-detail/index.wxml-->
-<text>pages/activity-query-detail/index.wxml</text>
+<view>
+  <table 
+    header-row-class-name="header-class"
+    headers="{{tableHeader}}" 
+    data="{{ row }}" 
+    stripe="{{ stripe }}" 
+    border="{{ border }}" 
+    no-data-msg="{{ msg }}"
+    bind:rowClick="onRowClick"
+  />
+</view>

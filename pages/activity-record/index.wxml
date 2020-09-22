@@ -1,7 +1,7 @@
 <!--pages/activity-record/index.wxml-->
 <text class="title">团建日期（必填）</text>
 <picker mode="date" bindchange="setActivityDate">
-  <l-input l-class="input-text" hide-label value='{{overDate}}' placeholder='选择团建日期'/>
+  <l-input l-class="input-text" hide-label disabled="{{true}}" value='{{activityDate}}' placeholder='选择团建日期'/>
 </picker>
 <text class="title">参与人员（必填）</text>
 <view class="textarea-box">
